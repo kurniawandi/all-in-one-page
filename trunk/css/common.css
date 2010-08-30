@@ -1,0 +1,9 @@
+.odd {background : #e5e5e5;}
+tr.header {background : gray;}
+/*div#footer {text-align:center;}*/
+div.tab_bar {background : #c5c5c5;}
+a.hid_button {text-decoration : none;
+color : black;
+display : block;
+}
+td.trans{width : 300;}

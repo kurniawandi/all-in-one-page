@@ -1,0 +1,161 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>动词+ed变过去式</title>
+
+	<script type="text/javascript" src="../js/jquery-1.4.2.js"></script>
+	<script type="text/javascript" src="../js/js_fn.js"></script>
+	<script type="text/javascript" src="../js/config.js"></script>
+	<script type="text/javascript">
+	var suffix = "ed";
+	var current_table_name = "level1_words_" + suffix;
+	function get_data_from_server (server_addr, table_name, request_page)
+	{
+		//alert ( this.id );
+		$.ajax({
+			type: "POST",
+			//url: "http://192.168.1.102/project/self-improvement/words_transform.php",
+			url: "http://" + server_addr + "/project/self-improvement/words_transport.php",
+			data: { tab_name : table_name, page : request_page },
+			//error can do a lot of work! try to connect like google.
+			//in function ajax can do recursively until connected to server.
+			error: function(){ alert("Network error."); },
+			success: function(xml) {
+				//alert(xml);
+				var current_page = parseInt($(xml).find("page").attr("id"));
+				var page_count = parseInt($(xml).find("page").attr("page_count"));
+
+				$("div#word_table_container").empty();
+				$("div#word_table_container").append(make_table_from_xml_to_html(xml, "ed", "动词@过去式"));
+				$("div#word_table_container").append(page_index_button_html(current_page, page_count));
+				
+				$("tr.header").css("background", "gray");
+				$("tr.odd").css("background", "#e5e5e5");
+			}
+		});
+	}
+
+
+	$(document).ready(function(){
+		//alert ( "nihao1" );
+		get_data_from_server(server_address, current_table_name, 1);
+		$("a#level1_tag").css("background", "gray");
+	});
+
+	//此处必须live，bind只能绑定一次，再后来的元素无法绑定
+	$("#page_button > a").live ("click", function (event) {
+		//alert(current_table_name);
+		get_data_from_server(server_address, current_table_name, this.id);
+		event.preventDefault();
+	});
+	
+	//table中的元素空格即可选择
+	$("#word_table a").live ("click", function (event) {
+		//alert ( "nihao3" );
+		var this_a_obj = $(this);
+		var a_id = this.id;
+		event.preventDefault();
+		if ( "False" == this_a_obj.text())
+		{
+			$.ajax({
+				type: "POST",
+				url: "http://" + server_address + "/project/self-improvement/words_operation.php",
+				data: { tab_name : current_table_name, exceptive_word : this.id, operation : "f" },
+				error: function(){ alert("Network error."); },
+				success: function(xml) {
+					//alert(xml);
+					this_a_obj.parent().next().wrapInner("<a id=" + a_id +" href=\"\"></a>");
+					this_a_obj.parent().text("False");
+					this_a_obj.remove();
+				}
+			});
+		}
+		else
+		{
+			$.ajax({
+				type: "POST",
+				url: "http://" + server_address + "/project/self-improvement/words_operation.php",
+				data: { tab_name : current_table_name, exceptive_word : this.id, operation : "t" },
+				error: function(){ alert("Network error."); },
+				success: function(xml) {
+					//alert(xml);
+					this_a_obj.parent().prev().wrapInner("<a id=" + a_id +" href=\"\"></a>");
+					this_a_obj.parent().text("True");
+					this_a_obj.remove();
+				}
+			});
+		}
+	});
+	$("tr.odd").live ("mouseout", function () {
+		$(this).css("background", "#e5e5e5");
+	});
+	$("tr.even").live ("mouseout", function () {
+		$(this).css("background", "white");
+	});
+	$("tr.header").live ("mouseout", function () {
+		$(this).css("background", "gray");
+	});
+	$("tr").live ("mouseover", function () {
+		$(this).css("background", "#c5c5c5");
+	});
+
+        </script>
+
+	<link rel="stylesheet" type="text/css" href="../css/common.css" />
+        <style type="text/css">
+        </style>
+</head>
+
+
+
+<body>
+	<h1>动词+ed变过去式</h1>
+	<div id="levels">
+		<a id="level1_tag" href="">Level 1 words</a>&nbsp;
+		<a id="level2_tag" href="">Level 2 words</a>&nbsp;
+		<a id="level3_tag" href="">Level 3 words</a>&nbsp;
+		<a id="level4_tag" href="">Level 4 words</a>&nbsp;
+		<a id="level5_tag" href="">Level 5 words</a>&nbsp;
+		<a id="level6_tag" href="">Level 6 words</a>&nbsp;
+	</div>
+	<div id="word_table_container"></div>
+	<div id="hint"><p>
+	<b>挑出错误单词的规则：</b>（点前务必看）<br />
+	请判断一个单词变型是否正确，如果一个单词加上后缀后变成了一个新单词，那么不要犹豫请点击“False”！比如：<br />
+	can + ed变成caned，这是个新单词，意思变了，点“False”！<br />
+	car + ed变成cared，这都不是动词过去式了，点“False”！<br />
+	如果你不小心点错了，那么再点“True”吧～<br />
+	<b>小窍门：</b>如果单词原型没有动词的词性，那么它+ed的变型肯定是不存在的，这个时候点“False”！
+	<p></div>
+
+	<script type="text/javascript">
+		$("#levels > a").click(function (event) {
+			event.preventDefault();
+			var table_name = "";
+			//alert(current_table_name);
+			switch ($(this).attr("id"))
+			{
+				case "level1_tag" : {table_name = "level1_words_" + suffix;break;}
+				case "level2_tag" : {table_name = "level2_words_" + suffix;break;}
+				case "level3_tag" : {table_name = "level3_words_" + suffix;break;}
+				case "level4_tag" : {table_name = "level4_words_" + suffix;break;}
+				case "level5_tag" : {table_name = "level5_words_" + suffix;break;}
+				case "level6_tag" : {table_name = "level6_words_" + suffix;break;}
+				default : {alert($(this).attr("id"));}
+			}
+			current_table_name = table_name;
+			//alert(table_name);
+			get_data_from_server(server_address, current_table_name, 1);
+			$("#levels > a").css("background", "white");
+			$(this).css("background", "gray");
+		});
+
+	</script>
+</body>
+
+
+
+</html>
+

@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>单词分级</title>
+		
+		<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+		<script type="text/javascript" src="./js/jquery-1.4.2.min.js"></script>
+		<script type="text/javascript" src="./js/js_fn.js"></script>
+		<script type="text/javascript" src="./js/config.js"></script>
+		<script type="text/javascript">
+		google.load("language", "1");
+		function translate_word (word, obj_place) {
+			google.language.detect(word, function(result) {
+				if (!result.error && result.language) {
+					google.language.translate(word, result.language, "zh", function(result) {
+						if (result.translation) {
+							//text()方法之前不用empty()
+							obj_place.text(result.translation);
+						}
+					});
+				}
+			});
+		}
+		function translate_table (level_id) {
+			$("table#level" + level_id).find("tr").each(function () {
+				var word = $(this).find("td.w").text();
+				var this_td_obj = $(this).find("td.trans");
+				translate_word (word, this_td_obj);
+				if (level_id != "7")
+				{
+					$(this).find("td.o").empty();
+					$(this).find("td.o").append(add_to_lib_button_html(word));
+				}
+			});
+		}
+		</script>
+
+		<link rel="stylesheet" type="text/css" href="./css/common.css" />
+		<style type="text/css">
+		</style>
+	</head>
+
+	<body>
+		<h1>单词分级</h1><a href="http://173.234.55.160/bbs/index.php" target="_blank">关于这个应用我要说两句</a>
+		<form action="" method="post" enctype="text/plain">
+			请粘贴整篇英语文本到下面的文本框中，选择过滤单词的难度级别，我们将迅速找出您可能不会的生词！
+			<textarea rows="10" cols="100" ></textarea>
+			<br />
+			过滤掉
+			<select name="levels">
+				<option value="level1">level 1</option>
+				<option value="level2">level 2</option>
+				<option value="level3">level 3</option>
+				<option value="level4">level 4</option>
+				<option value="level5">level 5</option>
+				<option value="level6" selected="selected">level 6</option>
+			</select>
+			及其以下难度的单词
+			<br />
+
+			<input type="submit" value="发送">
+			<input type="reset" value="重置">
+
+		</form>
+		<div id="stat_result">
+		</div>
+		<hr />
+		<center><div id="footer">author XBQ</div></center>
+		<script type="text/javascript">
+		$(":submit").click( function (event) {
+			event.preventDefault();
+			//单词处理
+			var text_data = $("textarea").val();
+			var selected_level = $("select option:selected").attr("value");
+			if (text_data != "" && text_data != undefined)
+			{
+				$("div#stat_result").empty();
+				$("div#stat_result").text("Loading...");
+				selected_level = selected_level.substring(5);
+				//alert(selected_level);
+				text_data = text_data.toLowerCase();
+				text_data = text_data.replace(/[\W_\d]+/g , " ");
+				//alert(text_data);
+				//去非字母符号
+				//text_data = text_data.replace(/\W/g , " ");
+				//去下划线
+				//text_data = text_data.replace(/_/g , " ");
+				//去数字
+				//text_data = text_data.replace(/\d/g , " ");
+				//去掉单个的字母
+				text_data = text_data.replace(/\s.\s/g , "");
+				//去掉首尾空格
+				text_data = text_data.replace(/^\s+|\s+$/g , "");
+				//去连续的空格
+				text_data = text_data.replace(/\s+/g , " ");
+				$.ajax({
+					type: "POST",
+					url: "http://" + server_address + "/beidanci/words_filter.php",
+					data: { text : text_data, selected : selected_level },
+					//error can do a lot of work! try to connect like google.
+					//in function ajax can do recursively until connected to server.
+					error: function(){ alert("Network error."); },
+					success: function (xml) {
+						//alert(xml);
+						//取出传过来的最后一个level的id
+						var last_level = parseInt($("level:last", xml).attr("id"));
+						$("div#stat_result").empty();
+						$("div#stat_result").append(show_statistic_result(xml, last_level));
+						$("div.content").hide();
+						//只show最难级别的
+						$("div#level" + last_level + "_content").show();
+						translate_table(last_level);
+
+					}//end of success
+				});//end of ajax
+			}//end of if
+		});//end of submit action
+		$("a.hid_button").live("click", function (event) {
+			var divid = "div#level"+$(this).parent().attr("id")+"_content";
+			$("div.content").slideUp();
+			$(divid).show();
+			event.preventDefault();
+		});
+		$(".all_translate").live ("click", function (event) {
+			translate_table($(this).parent().parent().attr("id").substring(5, 6));
+			event.preventDefault();
+		});
+		$(".unknown").live ("click", function (event) {
+			$(this).parent().parent().find("td.trans").empty();
+			$(this).parent().parent().find("td.trans").text("Loading...");
+			var trans_word = $(this).attr("id");
+			translate_word(trans_word, $(this).parent().parent().find("td.trans"));
+			var level_id = $(this).parent().parent().parent().parent().attr("id").substring(5, 6);
+			$.ajax({
+				type: "POST",
+				url: "http://" + server_address + "/beidanci/record_difficulty.php",
+				data: { word : trans_word, level : level_id },
+				//error can do a lot of work! try to connect like google.
+				//in function ajax can do recursively until connected to server.
+				error: function(){ alert("Network error."); },
+				success: function (xml) {
+				}//end of success
+			});//end of ajax
+			event.preventDefault();
+		});
+		$(".add_to_lib").live ("click", function (event) {
+			//var trans_word = $(this).attr("id");
+			//var level_id = $(this).parent().parent().parent().parent().attr("id").substring(5, 6);
+			$.ajax({
+				type: "POST",
+				url: "http://" + server_address + "/beidanci/record_difficulty.php",
+				data: { word : trans_word, level : level_id },
+				//error can do a lot of work! try to connect like google.
+				//in function ajax can do recursively until connected to server.
+				error: function() { alert("Network error."); },
+				success: function (xml) {
+				}//end of success
+				//加入哪个生词本
+			});//end of ajax
+			event.preventDefault();
+		});
+		</script>
+	</body>
+</html>
+
+
