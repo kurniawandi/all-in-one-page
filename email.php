@@ -1,5 +1,5 @@
 <?php
-
+//
 function user_change_email ($password1,$new_email,$user_name) {
 
 	global $feedback,$hidden_hash_var;
