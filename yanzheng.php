@@ -21,7 +21,7 @@ function user_isloggedin() {
 	if ($user_name && $id_hash) {
 		/*
 		   由cookies中得来的用户名和系统超级密码产生一个认证用的无序码如果该无序码与cookie中的无序码一样，则cookies中的变量是可信的，用户已经登录
-		 */
+		 */ 
 		$hash=md5($user_name.$hidden_hash_var);
 		if ($hash == $id_hash) 
 		{
