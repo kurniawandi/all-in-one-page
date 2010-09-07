@@ -17,11 +17,7 @@
 <?php
 
 
-
-
-
-
-
+echo "<form><table><tr></tr><tr></tr></table></form>";
 
 
 
