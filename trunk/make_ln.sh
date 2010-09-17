@@ -5,6 +5,8 @@ cp -lf ./beidanci/functions_for_filter.php /var/www/beidanci/
 cp -lf ./beidanci/index.html /var/www/beidanci/
 cp -lf ./beidanci/record_difficulty.php /var/www/beidanci/
 cp -lf ./beidanci/words_filter.php /var/www/beidanci/ 
+cp -lf ./include/db.php /var/www/include/
+cp -lf ./include/email_exists.php /var/www/include/ 
 cp -lrf ./include/js/ /var/www/include/js/ 
 cp -lrf ./beidanci/js/ /var/www/beidanci/ 
 cp -lrf ./beidanci/css/ /var/www/beidanci/
