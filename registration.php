@@ -39,9 +39,10 @@
 		<script type="text/javascript">
 		$("#email").blur( function () {
 			//alert("nihao!");
+
 			$.ajax({
 				type: "POST",
-				url: "http://" + server_address + "/beidanci/words_filter.php",
+				url: "http://" + server_address + "/include/email_exists.php",
 				data: { text : text_data, selected : selected_level },
 				//error can do a lot of work! try to connect like google.
 				//in function ajax can do recursively until connected to server.
