@@ -15,9 +15,9 @@
 	<body>
 		<form action="<?php $_SERVER['PHP_SELF'] ?>" name="reg_form" method="post">
 			<table border="1">
-				<tr><td>Email地址：</td><td><input id="" type="text" name="login" /></td></tr>
+				<tr><td>Email地址：</td><td><input id="email" type="text" name="login" /><label id="email_valid" for="email"></label></td></tr>
 				<tr><td><label for="passwd1">密码：</label></td><td><input id="passwd1" type="text" name="passwd" /></td></tr>
-				<tr><td><label for="passwd2">请再次输入密码：</label></td><td><input id="passwd2" type="text" name="passwd" /></td></tr>
+				<tr><td><label for="passwd2">请再次输入密码：</label></td><td><input id="passwd2" type="text" name="passwd" /><label id="passwd_valid" for="email"></label></td></tr>
 				<tr><td>请正确填写生日：</td><td><input id="" type="text" name="passwd" />可以用来取回密码</td></tr>
 				<tr><td colspan="2">
 					<div title="为了确保你的信息安全，请不要在网吧或者公共机房选择此项！&#10;如果今后要取消此选项，只需点击网站右上角的“退出”链接即可">
