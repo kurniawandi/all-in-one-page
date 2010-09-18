@@ -7,7 +7,8 @@ $_POST["exceptive_word"]	//用户找出的例外的单词
 $_POST["operation"]	//用户对例外单词的操作，或+或-
 */
 
-include_once("../functions_for_filter.php");
+//include_once("../functions_for_filter.php");
+include_once("../../include/db.php");
 
 if ( isset ($_POST["tab_name"]) )
 {

@@ -6,7 +6,8 @@ $_POST["tab_name"]
 $_POST["page"]			//第几页
 */
 
-include_once("../functions_for_filter.php");
+//include_once("../functions_for_filter.php");
+include_once("../../include/db.php");
 
 if ( isset ($_POST["tab_name"]) )
 {
