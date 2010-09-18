@@ -5,7 +5,7 @@
 		<title>用户注册</title>
 		
 		<script type="text/javascript" src="./include/js/jquery-1.4.2.min.js"></script>
-		<script type="text/javascript" src="../include/js/config.js"></script>
+		<script type="text/javascript" src="./include/js/config.js"></script>
 		<script type="text/javascript">
 		</script>
 
