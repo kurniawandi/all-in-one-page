@@ -2,7 +2,6 @@
 
 function connect_db ($db_name)
 {
-	//$db_name =  "vrwebmonitor";
 	$dbcnx = mysql_connect("127.0.0.1","root","aids00a");
 	if (!$dbcnx)
 	{
