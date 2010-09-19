@@ -23,14 +23,14 @@
 				<tr>
 					<td><label for="passwd1">密码：</label></td>
 					<td>
-						<input id="passwd1" type="password" name="passwd" />
-						<label class="" id="passwd1_valid"></label>
+						<input id="passwd1" type="password" name="passwd1" />
+						<label class="" id="passwd1_valid">密码请长于6位。</label>
 					</td>
 				</tr>
 				<tr>
 					<td><label for="passwd2">请再次输入密码：</label></td>
 					<td>
-						<input id="passwd2" type="password" name="passwd" />
+						<input id="passwd2" type="password" name="passwd2" />
 						<label id="passwd2_valid" for="email"></label>
 					</td>
 				</tr>
@@ -84,13 +84,30 @@
 				});//end of ajax
 			}
 		});
-		$("#passwd1").keypress( function {
+		///*
+		$("#passwd1").keyup( function () {
 			var password1 = $(this).val();
-			if ( passwd1.length >= 6)
+			if ( password1.length >= 6)
 			{
+				$("#passwd1_valid").empty();
 				$("#passwd1_valid").text("填写正确。");
 			}
+			else
+			{
+			}
 		});
+		$("#passwd2").keyup( function () {
+			var passwd2 = $(this).val();
+			function cmp_passwd () {
+				//
+			}
+			var cmp_result = function () {
+				return 1;
+			}();
+			//alert((function () {return 1;})());
+			alert(cmp_result);
+		});
+		//*/
 		</script>
 	</body>
 </html>
