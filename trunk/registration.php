@@ -31,7 +31,7 @@
 					<td><label for="passwd2">请再次输入密码：</label></td>
 					<td>
 						<input id="passwd2" type="password" name="passwd2" />
-						<label id="passwd2_valid" for="email"></label>
+						<label id="passwd2_valid" for="email">请将上面的密码再输入一遍。</label>
 					</td>
 				</tr>
 				<tr><td>请正确填写生日：</td><td><input id="" type="text" name="passwd" />可以用来取回密码</td></tr>
@@ -98,14 +98,47 @@
 		});
 		$("#passwd2").keyup( function () {
 			var passwd2 = $(this).val();
-			function cmp_passwd () {
+			var passwd1 = $("#passwd1").val();
+			function pw_cmp (first_pw, current_pw) {
 				//
+				if ( current_pw.length > 0 )
+				{
+					if ( current_pw === first_pw.substring(0, current_pw.length) )
+					{
+						return 0;
+					}
+					else
+					{
+						return 1;
+					}
+				}
+				return -1;
 			}
-			var cmp_result = function () {
-				return 1;
-			}();
-			//alert((function () {return 1;})());
-			alert(cmp_result);
+			var stat = pw_cmp (passwd1, passwd2);
+			switch (stat)
+			{
+				case 0 : 
+				{
+					if (passwd2.length == passwd1.length)
+					{
+						$("#passwd2_valid").text("两次输入密码一致。");
+					}
+					else
+					{
+						$("#passwd2_valid").text("一致，请继续输入。");
+					}
+					break;
+				}
+				case 1 : 
+				{
+					$("#passwd2_valid").text("两次输入密码不一致。");
+					break;
+				}
+				default : 
+				{
+					$("#passwd2_valid").text("请上面的密码再输入一遍。");
+				}
+			}
 		});
 		//*/
 		</script>
