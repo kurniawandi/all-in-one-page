@@ -16,20 +16,23 @@
 	<body>
 <?php
 include_once("./include/db.php");
-if ( isset($_POST["login"]) && isset($_POST["passwd1"]) )
+if ( isset($_POST["login"]) || isset($_POST["passwd1"]) )
 {
 	$db_name = "core_db";
 	$dbcnx = connect_db($db_name);
-	$sql = "";
-	echo $_POST["email"] . $_POST["passwd1"];
+	$sql = "insert into core_users (user_email, user_show_name, user_passwd, user_registered)";
+	echo $_POST["login"] . $_POST["passwd1"];
 
 	mysql_close ($dbcnx);
 }
 else
 {
 ?>
-		<form action="<?php $_SERVER["PHP_SELF"] ?>" name="reg_form" method="post">
-			<table border="1">
+		<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" name="reg_form" method="post">
+		<!--
+		<form action="registration.php" name="reg_form" method="post">
+		-->
+			<table border="0">
 				<tr>
 					<td>Email地址：</td>
 					<td>
@@ -205,7 +208,8 @@ else
 						if ( 0 == xml )
 						{
 							$("#email_valid").text("填写正确");
-							$("#email_valid").attr("valid", "1");
+							$("#email").attr("valid", "1");
+							//alert($("#email_valid").attr("valid"));
 						}
 						else
 						{
@@ -224,7 +228,7 @@ else
 			if ( password1.length >= 6)
 			{
 				$("#passwd1_valid").text("填写正确");
-				$("#passwd1_valid").attr("valid", "1");
+				$("#passwd1").attr("valid", "1");
 			}
 			else
 			{
@@ -257,7 +261,7 @@ else
 					if (passwd2.length == passwd1.length)
 					{
 						$("#passwd2_valid").text("两次输入密码一致");
-						$("#passwd2_valid").attr("valid", "1");
+						$("#passwd2").attr("valid", "1");
 					}
 					else
 					{
@@ -291,12 +295,12 @@ else
 				$("#email_valid").text("请输入正确的邮箱地址作为您的登录帐户名");
 				event.preventDefault();
 			}
-			if ( $("#passwd1_valid").attr("valid") != "1" )
+			if ( $("#passwd1").attr("valid") != "1" )
 			{
 				$("#passwd1_valid").text("密码请长于6位");
 				event.preventDefault();
 			}
-			if ( $("#passwd2_valid").attr("valid") != "1" )
+			if ( $("#passwd2").attr("valid") != "1" )
 			{
 				$("#passwd2_valid").text("两次密码请保持一致");
 				event.preventDefault();
