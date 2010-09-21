@@ -14,25 +14,41 @@
 	</head>
 
 	<body>
+<?php
+include_once("./include/db.php");
+if ( isset($_POST["login"]) && isset($_POST["passwd1"]) )
+{
+	$db_name = "core_db";
+	$dbcnx = connect_db($db_name);
+	$sql = "";
+	echo $_POST["email"] . $_POST["passwd1"];
 
-		<form action="<?php $_SERVER['PHP_SELF'] ?>" name="reg_form" method="post">
-			<table border="0">
+	mysql_close ($dbcnx);
+}
+else
+{
+?>
+		<form action="<?php $_SERVER["PHP_SELF"] ?>" name="reg_form" method="post">
+			<table border="1">
 				<tr>
 					<td>Email地址：</td>
-					<td><input id="email" type="text" name="login" valid="0" /><label id="email_valid"></label></td>
+					<td>
+						<input id="email" type="text" name="login" valid="0" />
+						<label id="email_valid">这将是您的登录帐户名</label>
+					</td>
 				</tr>
 				<tr>
 					<td><label for="passwd1">密码：</label></td>
 					<td>
 						<input id="passwd1" type="password" name="passwd1" valid="0" />
-						<label class="" id="passwd1_valid">密码请长于6位。</label>
+						<label class="" id="passwd1_valid">密码请长于6位</label>
 					</td>
 				</tr>
 				<tr>
 					<td><label for="passwd2">请再次输入密码：</label></td>
 					<td>
 						<input id="passwd2" type="password" name="passwd2" valid="0" />
-						<label id="passwd2_valid" for="email">请将上面的密码再输入一遍。</label>
+						<label id="passwd2_valid" for="email">请将上面的密码再输入一遍</label>
 					</td>
 				</tr>
 				<tr>
@@ -137,7 +153,8 @@
 					<option value="29" >29</option> 
 					<option value="30" >30</option> 
 					<option value="31" >31</option> 
-					</select><span class="p_lr_10">日</span>&nbsp;可以用来取回密码 
+					</select><span class="p_lr_10">日</span>
+					<label id="birth_valid"> 可以用来取回密码</label>
 					</td>
 				</tr>
 				<tr>
@@ -154,13 +171,14 @@
 				</tr>
 				<tr>
 					<td><input type="submit" value="注册" /></td>
-					<td>&nbsp;忘记密码 | <a href="./registration.php">登录</a></td>
+					<td>&nbsp;忘记密码 | <a href="./index.php">登录</a></td>
 				</tr>
+				<tr><td id="hint" colspan="2"></td></tr>
 			</table>
 		</form>
 
 <?php
-
+}
 
 ?>
 		<script type="text/javascript">
@@ -186,12 +204,12 @@
 						//邮箱地址可用
 						if ( 0 == xml )
 						{
-							$("#email_valid").text("填写正确。");
+							$("#email_valid").text("填写正确");
 							$("#email_valid").attr("valid", "1");
 						}
 						else
 						{
-							$("#email_valid").text("该邮箱已被注册，请更换邮箱。");
+							$("#email_valid").text("该邮箱已被注册，请更换邮箱");
 						}
 					}//end of success
 				});//end of ajax
@@ -200,14 +218,17 @@
 		///*
 		$("#passwd1").keyup( function () {
 			var password1 = $(this).val();
+			//if (/[\\\/\&\'\"\*\,<>#\?% ]/.test(password1.substring(password1.length - 1)))
+			{
+			}
 			if ( password1.length >= 6)
 			{
-				$("#passwd1_valid").text("填写正确。");
+				$("#passwd1_valid").text("填写正确");
 				$("#passwd1_valid").attr("valid", "1");
 			}
 			else
 			{
-				$("#passwd1_valid").text("密码请长于6位。");
+				$("#passwd1_valid").text("密码请长于6位");
 			}
 		});
 		$("#passwd2").keyup( function () {
@@ -235,32 +256,57 @@
 				{
 					if (passwd2.length == passwd1.length)
 					{
-						$("#passwd2_valid").text("两次输入密码一致。");
+						$("#passwd2_valid").text("两次输入密码一致");
 						$("#passwd2_valid").attr("valid", "1");
 					}
 					else
 					{
-						$("#passwd2_valid").text("一致，请继续输入。");
+						$("#passwd2_valid").text("一致，请继续输入");
 					}
 					break;
 				}
 				case 1 : 
 				{
-					$("#passwd2_valid").text("两次输入密码不一致。");
+					$("#passwd2_valid").text("两次输入密码不一致");
 					break;
 				}
 				default : 
 				{
-					$("#passwd2_valid").text("请上面的密码再输入一遍。");
+					$("#passwd2_valid").text("请上面的密码再输入一遍");
 				}
 			}
 		});
-		$("select").click( function () {
+		$("select").change( function () {
 			$(this).attr("valid", "1");
-		});
-		$(":submit").click( function () {
+			$("#birth_valid").empty();
 			//alert("nihao");
-			alert($("select#m").attr("valid"));
+		});
+		$(":submit").click( function (event) {
+			//alert("nihao");
+			//alert($("select#m").attr("valid"));
+			$("#hint").empty();
+			var i = 0;
+			if ( $("#email").attr("valid") != "1" )
+			{
+				$("#email_valid").text("请输入正确的邮箱地址作为您的登录帐户名");
+				event.preventDefault();
+			}
+			if ( $("#passwd1_valid").attr("valid") != "1" )
+			{
+				$("#passwd1_valid").text("密码请长于6位");
+				event.preventDefault();
+			}
+			if ( $("#passwd2_valid").attr("valid") != "1" )
+			{
+				$("#passwd2_valid").text("两次密码请保持一致");
+				event.preventDefault();
+			}
+			if ( ($("select#y").attr("valid") == "0") && ($("select#m").attr("valid") == "0") && 
+				($("select#d").attr("valid") == "0") )
+			{
+				$("#birth_valid").text("请选择生日");
+				event.preventDefault();
+			}
 		});
 		//*/
 		</script>
