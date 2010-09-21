@@ -5,6 +5,7 @@
 		<title>用户注册</title>
 		
 		<script type="text/javascript" src="./include/js/jquery-1.4.2.min.js"></script>
+		<script type="text/javascript" src="./include/js/common.js"></script>
 		<script type="text/javascript" src="./include/js/config.js"></script>
 		<script type="text/javascript">
 		</script>
@@ -20,8 +21,17 @@ if ( isset($_POST["login"]) || isset($_POST["passwd1"]) )
 {
 	$db_name = "core_db";
 	$dbcnx = connect_db($db_name);
-	$sql = "insert into core_users (user_email, user_show_name, user_passwd, user_registered)";
-	echo $_POST["login"] . $_POST["passwd1"];
+	//trim的处理在客户端进行
+	$email = $_POST["login"];
+	$show_name_array = split("@", $email);
+	$pw_md5 = md5($_POST["passwd1"]);
+	$sql = "insert into core_users (user_email, user_show_name, user_passwd, user_registered) values ('" . $email . "', '" . $show_name_array[0] . "', '" . $pw_md5 . "', now());";
+	echo $sql;
+	$result = mysql_query($sql);
+	if (!$result)
+	{
+	    die('Invalid query: ' . mysql_error());
+	}
 
 	mysql_close ($dbcnx);
 }
@@ -187,6 +197,7 @@ else
 		<script type="text/javascript">
 		$("#email").blur( function () {
 			var email_addr = $(this).val();
+			//可以前后又空格，让trim处理首位空格
 			var email_reg = /^[-a-zA-Z0-9_\.]+@([0-9A-Za-z][0-9A-Za-z-]+\.)+[A-Za-z]{2,5}$/;
 			if(!email_reg.test(email_addr))
 			{
