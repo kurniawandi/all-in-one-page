@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -17,26 +18,30 @@
 	<body>
 <?php
 include_once("./include/db.php");
+if ( isset($_GET["logout"]) && $_GET["logout"]=="1")
+{
+	unset($_SESSION["show_name"]);
+}
+else
+{
 if ( isset($_POST["login"]) && isset($_POST["passwd"]) )
 {
-	echo $_POST["login"] . $_POST["passwd"] . "nihao1\n";
 	$db_name = "core_db";
 	$dbcnx = connect_db($db_name);
 	//trim的处理在客户端进行
 	$email = $_POST["login"];
-	$pw_md5 = md5($_POST["passwd1"]);
-	$sql = "select * from core_users where user_email='$email' and user_passwd='$pw_md5';";
-	echo $sql . "\n";
+	$pw_md5 = md5($_POST["passwd"]);
+	$sql = "select * from core_users where user_email=\"$email\" and user_passwd=\"$pw_md5\";";
+	//echo $sql . "\n";
 	$result = mysql_query($sql);
 	if (!$result)
 	{
 	    die('Invalid query: ' . mysql_error());
 	}
-	if (mysql_num_fields ( $result ) > 0)
+	if (mysql_num_rows ($result) > 0)
 	{
-		echo "login in!";
-		$row = mysql_fetch_array($result, MYSQL_BOTH)
-		echo $row["user_email"] . " " . $row["user_passwd"];
+		$row = mysql_fetch_array($result, MYSQL_BOTH);
+		$_SESSION["show_name"] = $row["user_show_name"];
 	}
 
 	mysql_close ($dbcnx);
@@ -45,7 +50,7 @@ else
 {
 ?>
 		<form action="<?php echo $_SERVER['PHP_SELF']; ?>" name="login_form" method="post">
-			<table border="1">
+			<table border="0">
 				<tr><td>帐号：</td><td><input type="text" name="login" /></td></tr>
 				<tr><td>密码：</td><td><input type="password" name="passwd" /></td></tr>
 				<tr><td colspan="2">
@@ -59,12 +64,19 @@ else
 				</tr>
 			</table>
 		</form>
-
 <?php
 }
-//echo '<form action="" name="" method=""><table>';
-//echo '<tr><td>帐号：</td><td><input type="text" name="" /></td></tr>';
-//echo '<tr><td>密码：</td></tr></table></form>';
+}
+
+if ( isset($_SESSION["show_name"]) )
+{
+?>
+<h1>Welcome <?php echo $_SESSION["show_name"];?>!</h1>
+<a href="http://192.168.1.102/?logout=1">退出</a><br />
+<h2>应用</h2>
+<a href="http://192.168.1.102/beidanci/">背单词</a>
+<?php
+}
 ?>
 		<script type="text/javascript">
 		//帐号的首位是不能有空格存在的，密码可以
