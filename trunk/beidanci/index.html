@@ -80,6 +80,8 @@
 				selected_level = selected_level.substring(5);
 				//alert(selected_level);
 				text_data = text_data.toLowerCase();
+				//x = new Date();
+				///*
 				text_data = text_data.replace(/[\W_\d]+/g , " ");
 				//alert(text_data);
 				//去非字母符号
@@ -89,11 +91,20 @@
 				//去数字
 				//text_data = text_data.replace(/\d/g , " ");
 				//去掉单个的字母
-				text_data = text_data.replace(/\s.\s/g , "");
+				text_data = text_data.replace(/\s.\s/g , " ");
 				//去掉首尾空格
-				text_data = text_data.replace(/^\s+|\s+$/g , "");
+				//text_data = text_data.replace(/^\s+|\s+$/g , "");
 				//去连续的空格
 				text_data = text_data.replace(/\s+/g , " ");
+				//然后trim前后一个空格就好
+				text_data = text_data.substring(1, text_data.length-1);
+				//*/
+				//text_data = text_data.replace(/\s+/g , " ").replace(/^\s+|\s+$/g , "").replace(/\s.\s/g , "").replace(/[\W_\d]+/g , " ");
+				//y = new Date(); 
+				//diff = y.getTime() - x.getTime();
+				//alert("载入本页共用了 " + diff/1000 + " 秒");
+				//alert(text_data);
+				//return;
 				$.ajax({
 					type: "POST",
 					url: "http://" + server_address + "/beidanci/words_filter.php",
