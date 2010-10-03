@@ -17,69 +17,35 @@
 
 	<body>
 <?php
-include_once("./include/db.php");
-if ( isset($_GET["logout"]) && $_GET["logout"]=="1")
+
+include_once("./include/config.php");
+include_once("./login.php");
+if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) && 
+	md5($_COOKIE["hello_user"].$super_pw) == $_COOKIE["nihao_user"] )
 {
-	unset($_SESSION["show_name"]);
+	echo "hello!";
+	setcookie("hello_user", $_COOKIE["hello_user"], (time()+604800), '/', '', 0);//一周
+	setcookie("nihao_user", $_COOKIE["nihao_user"], (time()+604800), '/', '', 0);
+	if ( !isset($_SESSION["user_id"]) )
+	{
+		$_SESSION["user_id"] = $_COOKIE["hello_user"];
+	}
+	show_user_info_center();
 }
 else
 {
-if ( isset($_POST["login"]) && isset($_POST["passwd"]) )
-{
-	$db_name = "core_db";
-	$dbcnx = connect_db($db_name);
-	//trim的处理在客户端进行
-	$email = $_POST["login"];
-	$pw_md5 = md5($_POST["passwd"]);
-	$sql = "select * from core_users where user_email=\"$email\" and user_passwd=\"$pw_md5\";";
-	//echo $sql . "\n";
-	$result = mysql_query($sql);
-	if (!$result)
-	{
-	    die('Invalid query: ' . mysql_error());
-	}
-	if (mysql_num_rows ($result) > 0)
-	{
-		$row = mysql_fetch_array($result, MYSQL_BOTH);
-		$_SESSION["show_name"] = $row["user_show_name"];
-	}
-
-	mysql_close ($dbcnx);
-}
-else
-{
-?>
-		<form action="<?php echo $_SERVER['PHP_SELF']; ?>" name="login_form" method="post">
-			<table border="0">
-				<tr><td>帐号：</td><td><input type="text" name="login" /></td></tr>
-				<tr><td>密码：</td><td><input type="password" name="passwd" /></td></tr>
-				<tr><td colspan="2">
-					<div title="为了确保你的信息安全，请不要在网吧或者公共机房选择此项！&#10;如果今后要取消此选项，只需点击网站右上角的“退出”链接即可">
-						<input id="remember" type="checkbox" name="remember" value="1"><label for="remember"> 记住登录状态</label>
-					</div>
-				</td></tr>
-				<tr>
-					<td><input type="submit" value="登录" /></td>
-					<td>&nbsp;忘记密码 | <a href="./registration.php">注册</a></td>
-				</tr>
-			</table>
-		</form>
-<?php
-}
+	show_page_login();
 }
 
-if ( isset($_SESSION["show_name"]) )
-{
-?>
-<h1>Welcome <?php echo $_SESSION["show_name"];?>!</h1>
-<a href="http://192.168.1.102/?logout=1">退出</a><br />
-<h2>应用</h2>
-<a href="http://192.168.1.102/beidanci/">背单词</a>
-<?php
-}
 ?>
 		<script type="text/javascript">
 		//帐号的首位是不能有空格存在的，密码可以
+		$(":submit").click( function (event) {
+			if ( "" == $(":text").val() || "" == $(":password").val() )
+			{
+				event.preventDefault();
+			}
+		});
 		</script>
 	</body>
 </html>
