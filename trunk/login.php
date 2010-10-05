@@ -1,4 +1,6 @@
 <?php
+
+include_once("./include/db.php");
 function show_page_login ()
 {
 ?>
@@ -23,7 +25,20 @@ function show_page_login ()
 
 function show_user_info_center ()
 {
+	if ( !isset($_SESSION["user_show_name"]) )
+	{
+		$db_name = "core_db";
+		$dbcnx = connect_db($db_name);
 
+		$sql = "select * from $db_name where user_id=" . $_SESSION["user_id"] . ";";
+		$result = mysql_query($sql);
+		while ($row = mysql_fetch_array($result, MYSQL_BOTH))
+		{
+			$_SESSION["user_show_name"] = $row["user_show_name"];
+		}
+		mysql_close ($dbcnx);
+	}
+	echo "nihao " . $_SESSION["user_show_name"];
 }
 
 ?>
