@@ -1,5 +1,6 @@
 <?php
 
+include_once("./include/config.php");
 include_once("./include/db.php");
 function show_page_login ()
 {
@@ -25,6 +26,7 @@ function show_page_login ()
 
 function show_user_info_center ()
 {
+	//echo "nihao " . $_SESSION["user_show_name"] . $_SESSION["user_id"];
 	if ( !isset($_SESSION["user_show_name"]) )
 	{
 		$db_name = "core_db";
@@ -35,10 +37,47 @@ function show_user_info_center ()
 		while ($row = mysql_fetch_array($result, MYSQL_BOTH))
 		{
 			$_SESSION["user_show_name"] = $row["user_show_name"];
+			echo $row["user_show_name"] . __LINE__;
 		}
 		mysql_close ($dbcnx);
 	}
-	echo "nihao " . $_SESSION["user_show_name"];
+	echo "nihao " . $_SESSION["user_show_name"] . $_SESSION["user_id"];
+}
+
+function user_exists ($user_email, $user_pw)
+{
+	$db_name = "core_db";
+	$dbcnx = connect_db($db_name);
+	//trim的处理在客户端进行
+	$email = $user_email;
+	$pw_md5 = md5($user_pw);
+	$sql = "select * from core_users where user_email=\"$email\" and user_passwd=\"$pw_md5\";";
+	$result = mysql_query($sql);
+	if (!$result)
+	{
+		die('Invalid query: ' . mysql_error());
+	}
+	if ( mysql_num_rows ($result) > 0 )
+	{
+		$row = mysql_fetch_array($result, MYSQL_BOTH);
+		return $row["user_id"] . " " . $row["user_show_name"];
+	}
+	mysql_close ($dbcnx);
+	return false;
+}
+
+function put_auto_login_cookies ($user_id, $md5_pw=null)
+{
+	$log_interval = 15*24*60*60;
+	setcookie("hello_user", $user_id, (time()+$log_interval), '/', '', 0);//一周
+	if ($md5_pw == null)
+	{
+		setcookie("nihao_user", md5($user_id.$super_pw), (time()+$log_interval), '/', '', 0);
+	}
+	else
+	{
+		setcookie("nihao_user", $md5_pw, (time()+$log_interval), '/', '', 0);
+	}
 }
 
 ?>

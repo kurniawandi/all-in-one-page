@@ -26,32 +26,67 @@ if ( isset($_POST["login"]) && isset($_POST["passwd"]) )
 	{
 		if (true)	//验证码正确
 		{
-			$db_name = "core_db";
-			$dbcnx = connect_db($db_name);
-			//trim的处理在客户端进行
-			$email = $_POST["login"];
-			$pw_md5 = md5($_POST["passwd"]);
-			$sql = "select * from core_users where user_email=\"$email\" and user_passwd=\"$pw_md5\";";
-			$result = mysql_query($sql);
-			if (!$result)
+			if ( ($id_name = user_exists($_POST["login"], $_POST["passwd"])) != false )
 			{
-				die('Invalid query: ' . mysql_error());
-			}
-			if ( mysql_num_rows ($result) > 0 )
-			{
-				$row = mysql_fetch_array($result, MYSQL_BOTH);
-				$user_id = $row["user_id"];
+				$id_name_array = split($id_name, " ");
+				$user_id = $id_name_array[0];
 				if ( isset($_POST["remember"]) )
 				{
-					setcookie("hello_user", $user_id, (time()+604800), '/', '', 0);//一周
-					setcookie("nihao_user", md5($user_id.$super_pw), (time()+604800), '/', '', 0);
+					put_auto_login_cookies($user_id);
 				}
 				$_SESSION["user_id"] = $user_id;
 				$_SESSION["user_show_name"] = $row["user_show_name"];
-
+				show_user_info_center();
 			}
-
-			mysql_close ($dbcnx);
+			else
+			{
+				if ($_SESSION["login_times"] > 2)
+				{
+					$_SESSION["login_times"] += 1;
+					$_SESSION["login_code"] = "";
+					show_page_login();
+				}
+				else
+				{
+					$_SESSION["login_times"] += 1;
+					show_page_login();
+				}
+			}
+		}
+		else
+		{
+			$_SESSION["login_times"] += 1;
+			$_SESSION["login_code"] = "";
+			show_page_login();
+		}
+	}
+	else
+	{
+		if ( ($id_name = user_exists($_POST["login"], $_POST["passwd"])) != false )
+		{
+			$id_name_array = split($id_name, " ");
+			$user_id = $id_name_array[0];
+			if ( isset($_POST["remember"]) )
+			{
+				put_auto_login_cookies($user_id);
+			}
+			$_SESSION["user_id"] = $user_id;
+			$_SESSION["user_show_name"] = $id_name_array[1];
+			show_user_info_center();
+		}
+		else
+		{
+			if ($_SESSION["login_times"] > 2)
+			{
+				$_SESSION["login_times"] += 1;
+				$_SESSION["login_code"] = "";
+				show_page_login();
+			}
+			else
+			{
+				$_SESSION["login_times"] += 1;
+				show_page_login();
+			}
 		}
 	}
 }
@@ -61,18 +96,18 @@ if ( isset($_GET["logout"]) && $_GET["logout"]=="1" )
 	unset($_SESSION["user_id"]);
 	unset($_SESSION["user_show_name"]);
 }
-else
+//else
 {
 	if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) && 
 		md5($_COOKIE["hello_user"].$super_pw) == $_COOKIE["nihao_user"] )
 	{
-		echo "hello!";
-		setcookie("hello_user", $_COOKIE["hello_user"], (time()+604800), '/', '', 0);//一周
-		setcookie("nihao_user", $_COOKIE["nihao_user"], (time()+604800), '/', '', 0);
+		echo "hello! " . $_COOKIE["hello_user"];
+		put_auto_login_cookies($_COOKIE["hello_user"], $_COOKIE["nihao_user"]);
 		if ( !isset($_SESSION["user_id"]) )
 		{
 			$_SESSION["user_id"] = $_COOKIE["hello_user"];
 		}
+		echo __LINE__;
 		show_user_info_center();
 	}
 	else
