@@ -26,22 +26,28 @@ function show_page_login ()
 
 function show_user_info_center ()
 {
-	//echo "nihao " . $_SESSION["user_show_name"] . $_SESSION["user_id"];
 	if ( !isset($_SESSION["user_show_name"]) )
 	{
 		$db_name = "core_db";
 		$dbcnx = connect_db($db_name);
 
-		$sql = "select * from $db_name where user_id=" . $_SESSION["user_id"] . ";";
+		$sql = "select * from core_users where user_id='" . $_SESSION["user_id"] . "';";
 		$result = mysql_query($sql);
+		if ( !$result )
+		{
+			die('Invalid query: ' . mysql_error());
+		}
 		while ($row = mysql_fetch_array($result, MYSQL_BOTH))
 		{
 			$_SESSION["user_show_name"] = $row["user_show_name"];
-			echo $row["user_show_name"] . __LINE__;
 		}
 		mysql_close ($dbcnx);
 	}
-	echo "nihao " . $_SESSION["user_show_name"] . $_SESSION["user_id"];
+	echo "<h1>Welcome " . $_SESSION["user_show_name"] . "!</h1>";
+	echo "<a href=\"http://192.168.1.102/?logout=1\">退出</a><br />";
+	echo "<h2>应用</h2>";
+	echo "<a href=\"http://192.168.1.102/beidanci/\">背单词</a>";
+
 }
 
 function user_exists ($user_email, $user_pw)
@@ -66,7 +72,7 @@ function user_exists ($user_email, $user_pw)
 	return false;
 }
 
-function put_auto_login_cookies ($user_id, $md5_pw=null)
+function set_auto_login_cookies ($user_id, $md5_pw=null)
 {
 	$log_interval = 15*24*60*60;
 	setcookie("hello_user", $user_id, (time()+$log_interval), '/', '', 0);//一周
@@ -77,6 +83,21 @@ function put_auto_login_cookies ($user_id, $md5_pw=null)
 	else
 	{
 		setcookie("nihao_user", $md5_pw, (time()+$log_interval), '/', '', 0);
+	}
+}
+
+function unset_auto_login_cookies ($user_id, $md5_pw=null)
+{
+	$log_interval = 15*24*60*60;
+	//setcookie("hello_user", $user_id, (time()-$log_interval), '/', '', 0);//一周
+	setcookie("hello_user", "", (time()-3600), '/', '', 0);//一周
+	if ($md5_pw == null)
+	{
+		setcookie("nihao_user", "", (time()-3600), '/', '', 0);
+	}
+	else
+	{
+		setcookie("nihao_user", "", (time()-3600), '/', '', 0);
 	}
 }
 
