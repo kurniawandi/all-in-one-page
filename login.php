@@ -1,6 +1,7 @@
 <?php
 
-include_once("./include/config.php");
+//include_once("./include/config.php");
+require_once("./include/config.php");
 include_once("./include/db.php");
 function show_page_login ()
 {
@@ -44,9 +45,11 @@ function show_user_info_center ()
 		mysql_close ($dbcnx);
 	}
 	echo "<h1>Welcome " . $_SESSION["user_show_name"] . "!</h1>";
-	echo "<a href=\"http://192.168.1.102/?logout=1\">退出</a><br />";
+	echo "<a href=\"http://192.168.237.56/?logout=1\">退出</a><br />";
+	echo "<a href=\"http://" . $server_addr . "/?logout=1\">退出</a><br />";
+	echo "  --------------- " . $super_pw;
 	echo "<h2>应用</h2>";
-	echo "<a href=\"http://192.168.1.102/beidanci/\">背单词</a>";
+	echo "<a href=\"http://$server_addr/beidanci/\">背单词</a>";
 
 }
 
