@@ -45,12 +45,11 @@ function show_user_info_center ()
 		mysql_close ($dbcnx);
 	}
 	echo "<h1>Welcome " . $_SESSION["user_show_name"] . "!</h1>";
-	echo "<a href=\"http://192.168.237.56/?logout=1\">退出</a><br />";
+	//这里，在函数的内部，使用了一个全局变量，因此要使用关键字global
+	global $server_addr;
 	echo "<a href=\"http://" . $server_addr . "/?logout=1\">退出</a><br />";
-	echo "  --------------- " . $super_pw;
 	echo "<h2>应用</h2>";
 	echo "<a href=\"http://$server_addr/beidanci/\">背单词</a>";
-
 }
 
 function user_exists ($user_email, $user_pw)
