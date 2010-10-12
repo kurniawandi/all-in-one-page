@@ -110,7 +110,6 @@ else if ( isset($_SESSION["user_id"]) && isset($_SESSION["user_show_name"]) )
 else if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) && 
 		md5($_COOKIE["hello_user"].$super_pw) == $_COOKIE["nihao_user"] )
 {
-	echo $super_pw;
 	set_auto_login_cookies($_COOKIE["hello_user"], $_COOKIE["nihao_user"]);
 	if ( !isset($_SESSION["user_id"]) )
 	{
