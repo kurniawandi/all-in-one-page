@@ -76,6 +76,7 @@ function user_exists ($user_email, $user_pw)
 
 function set_auto_login_cookies ($user_id, $md5_pw=null)
 {
+	global $super_pw;
 	$log_interval = 15*24*60*60;
 	setcookie("hello_user", $user_id, (time()+$log_interval), '/', '', 0);//一周
 	if ($md5_pw == null)

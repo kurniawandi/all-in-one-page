@@ -20,6 +20,7 @@
 
 include_once("./include/config.php");
 include_once("./login.php");
+global $super_pw;
 if ( isset($_POST["login"]) && isset($_POST["passwd"]) )
 {
 	if ( $_SESSION["login_times"] >= 3 )
@@ -28,7 +29,7 @@ if ( isset($_POST["login"]) && isset($_POST["passwd"]) )
 		{
 			if ( ($id_name = user_exists($_POST["login"], $_POST["passwd"])) != false )
 			{
-				$id_name_array = split(" ", $id_name);
+				$id_name_array = preg_split("/ /", $id_name);
 				$user_id = $id_name_array[0];
 				if ( isset($_POST["remember"]) )
 				{
@@ -64,7 +65,7 @@ if ( isset($_POST["login"]) && isset($_POST["passwd"]) )
 	{
 		if ( ($id_name = user_exists($_POST["login"], $_POST["passwd"])) != false )
 		{
-			$id_name_array = split(" ", $id_name);
+			$id_name_array = preg_split("/ /", $id_name);
 			$user_id = $id_name_array[0];
 			if ( isset($_POST["remember"]) )
 			{
@@ -92,7 +93,10 @@ if ( isset($_POST["login"]) && isset($_POST["passwd"]) )
 }
 else if ( isset($_GET["logout"]) && $_GET["logout"]=="1" )
 {
-	unset_auto_login_cookies($_SESSION["user_id"], $_COOKIE["nihao_user"]);
+	if ( isset ($_SESSION["user_id"]) )
+	{
+		unset_auto_login_cookies($_SESSION["user_id"], isset($_COOKIE["nihao_user"])? $_COOKIE["nihao_user"] : null );
+	}
 	unset($_COOKIE["hello_user"]);
 	unset($_COOKIE["nihao_user"]);
 	unset($_SESSION["user_id"]);
@@ -106,6 +110,7 @@ else if ( isset($_SESSION["user_id"]) && isset($_SESSION["user_show_name"]) )
 else if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) && 
 		md5($_COOKIE["hello_user"].$super_pw) == $_COOKIE["nihao_user"] )
 {
+	echo $super_pw;
 	set_auto_login_cookies($_COOKIE["hello_user"], $_COOKIE["nihao_user"]);
 	if ( !isset($_SESSION["user_id"]) )
 	{
