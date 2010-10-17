@@ -7,7 +7,7 @@ if ( isset ($_POST["text"]) )
 {
 	//$text_data = $_POST["text"];
 	//搜索值和搜索键的效率不一样
-	$data_array = split(" ", $_POST["text"]);
+	$data_array = preg_split("/ /", $_POST["text"]);
 	$total_words = count ($data_array);
 	//array_flip($date_array);
 	if ( isset ($_POST["selected"]) )
@@ -21,6 +21,7 @@ if ( isset ($_POST["text"]) )
 }
 else
 {
+	echo "no post!";
 	exit();
 }
 
