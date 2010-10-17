@@ -34,6 +34,9 @@
 				}
 			});
 		}
+		$(document).ready(function(){
+			$("textarea").focus();
+		});
 		</script>
 
 		<link rel="stylesheet" type="text/css" href="./css/common.css" />
@@ -80,10 +83,11 @@
 				selected_level = selected_level.substring(5);
 				//alert(selected_level);
 				text_data = text_data.toLowerCase();
-				//x = new Date(); 
+				//x = new Date();
+				//去文本中的非字母符号、下划线、数字
 				text_data = text_data.replace(/[\W_\d]+/g , " ");
 				//去掉单个的字母
-				text_data = text_data.replace(/\s.\s/g , " ");
+				text_data = text_data.replace(/\b.\b/g , " ");
 				//去掉首尾空格
 				//text_data = text_data.replace(/^\s+|\s+$/g , "");
 				//去连续的空格
@@ -121,7 +125,10 @@
 					data: { text : text_data, selected : selected_level },
 					//error can do a lot of work! try to connect like google.
 					//in function ajax can do recursively until connected to server.
-					error: function(){ alert("Network error."); },
+					error: function(XMLHttpRequest, textStatus, errorThrown){ 
+						alert(textStatus);
+						alert(errorThrown);
+					},
 					success: function (xml) {
 						//alert(xml);
 						//取出传过来的最后一个level的id
@@ -132,7 +139,7 @@
 						//只show最难级别的
 						$("div#level" + last_level + "_content").show();
 						translate_table(last_level);
-
+						$("textarea").focus();
 					}//end of success
 				});//end of ajax
 			}//end of if
@@ -180,6 +187,23 @@
 				//加入哪个生词本
 			});//end of ajax
 			event.preventDefault();
+		});
+		$(window).keydown(function(event) {
+			//alert(event.keyCode);
+			switch(event.keyCode) {
+				// ...
+				// 不同的按键可以做不同的事情
+				// 不同的浏览器的keycode不同
+				// 更多详细信息:     http://unixpapa.com/js/key.html
+				// ...
+				case 191 : {
+					if (document.activeElement.tagName != "TEXTAREA")
+					{
+						$("textarea").focus();
+						event.preventDefault();
+					}
+				}
+			}
 		});
 		</script>
 	</body>
