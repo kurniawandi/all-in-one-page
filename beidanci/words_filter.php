@@ -3,6 +3,7 @@
 //include_once("./functions_for_filter.php");
 include_once("../include/db.php");
 //header("Content-Type: text/xml");
+$_SESSION["nihao"] = "ajax got session also!";
 if ( isset ($_POST["text"]) )
 {
 	//$text_data = $_POST["text"];

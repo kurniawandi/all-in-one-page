@@ -157,7 +157,8 @@
 		$(".unknown").live ("click", function (event) {
 			$(this).parent().parent().find("td.trans").empty();
 			$(this).parent().parent().find("td.trans").text("Loading...");
-			var trans_word = $(this).attr("id");
+			var trans_word = $(this).attr("id").split("@")[0];
+			//alert(trans_word);
 			translate_word(trans_word, $(this).parent().parent().find("td.trans"));
 			var level_id = $(this).parent().parent().parent().parent().attr("id").substring(5, 6);
 			$.ajax({
@@ -173,7 +174,7 @@
 			event.preventDefault();
 		});
 		$(".add_to_lib").live ("click", function (event) {
-			//var trans_word = $(this).attr("id");
+			//var trans_word = $(this).attr("id").split("@")[0];
 			//var level_id = $(this).parent().parent().parent().parent().attr("id").substring(5, 6);
 			$.ajax({
 				type: "POST",
@@ -187,6 +188,26 @@
 				//加入哪个生词本
 			});//end of ajax
 			event.preventDefault();
+		});
+		$(".add_to_known").live ("click", function (event) {
+			var trans_word = $(this).attr("id").split("@")[0];
+			alert(trans_word);
+			$.ajax({
+				type: "POST",
+				url: "http://" + server_address + "/beidanci/add_to_known.php",
+				//data: { word : trans_word, level : level_id },
+				//error can do a lot of work! try to connect like google.
+				//in function ajax can do recursively until connected to server.
+				error: function(XMLHttpRequest, textStatus, errorThrown){ 
+					alert(textStatus);
+					alert(errorThrown);
+				},
+				success: function (xml) {
+					alert("=========" + xml);
+				}//end of success
+				//加入哪个生词本
+			});//end of ajax
+		
 		});
 		$(window).keydown(function(event) {
 			//alert(event.keyCode);
