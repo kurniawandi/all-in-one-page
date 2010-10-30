@@ -93,12 +93,18 @@ function make_table_from_xml_to_html (xml, suffix, operation)
 //用户将单词加入到生词本的按钮
 function add_to_lib_button_html (which_word)
 {
-	return "<input type=\"button\" id=\"" + which_word + "\" class=\"add_to_lib\" value=\"加入生词本\" />";
+	return "<input type=\"button\" id=\"" + which_word + "@wordbook\" class=\"add_to_lib\" value=\"加入生词本\" />";
+}
+
+//用户记录不需要统计的单词
+function add_to_known_button_html (which_word)
+{
+	return "<input type=\"button\" id=\"" + which_word + "@known\" class=\"add_to_known\" value=\"忽略统计\" />";
 }
 
 function translate_unknown_button_html (which_word)
 {
-	return "<input type=\"button\" id=\"" + which_word + "\" class=\"unknown\" value=\"翻译\" />";
+	return "<input type=\"button\" id=\"" + which_word + "@trans\" class=\"unknown\" value=\"翻译\" />";
 }
 
 function show_statistic_result (xml, last_level)
@@ -124,7 +130,7 @@ function show_statistic_result (xml, last_level)
 		res_html[j] += "<input type=\"button\" class=\"all_add_to_lib\" value=\"将所有单词加入生词本\" />";
 		res_html[j] += "</div><!--end of operation_bar-->";
 		res_html[j] += "<table id=\"level" + this_id + "\" border=\"1\">";
-		res_html[j] += "<tr class=\"header\"><th>Word</th><th>Translation</th><th>Frequency</th><th>operation</th></tr>";
+		res_html[j] += "<tr class=\"header\"><th>Word</th><th>Translation</th><th>Frequency</th><th>Operation</th></tr>";
 		var row_array = new Array();
 		var i = 0;
 		//将行的html放入到数组中
@@ -141,7 +147,8 @@ function show_statistic_result (xml, last_level)
 			row_array[i] = "<tr><td class=\"w\" width=\"160\">" + $(this).text() + "</td>";
 			row_array[i] += "<td class=\"trans\">Loading...</td>";
 			row_array[i] += "<td class=\"f\">" + $(this).attr("frequency") + "</td>";
-			row_array[i] += "<td class=\"o\">" + add_to_lib_button_html($(this).text()) + "</td></tr>";
+			row_array[i] += "<td class=\"o\">" + add_to_lib_button_html($(this).text());
+			row_array[i] += add_to_known_button_html($(this).text()) + "</td></tr>";
 			}
 			i++;
 		});
