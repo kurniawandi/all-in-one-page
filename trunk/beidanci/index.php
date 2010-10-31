@@ -6,6 +6,7 @@ if ( isset($_SESSION["user_id"]) && isset($_SESSION["user_show_name"]) )
 {
 	$user_id = $_SESSION["user_id"];
 	$user_show_name = $_SESSION["user_show_name"];
+	set_auto_login_cookies($user_id);
 }
 else if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) && 
 		md5($_COOKIE["hello_user"].$super_pw) == $_COOKIE["nihao_user"] )
