@@ -1,3 +1,28 @@
+<?php
+session_start();
+include_once("../setting.php");
+include_once(ABSPATH . "login.php");
+if ( isset($_SESSION["user_id"]) && isset($_SESSION["user_show_name"]) )
+{
+	$user_id = $_SESSION["user_id"];
+	$user_show_name = $_SESSION["user_show_name"];
+}
+else if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) && 
+		md5($_COOKIE["hello_user"].$super_pw) == $_COOKIE["nihao_user"] )
+{
+	set_auto_login_cookies($_COOKIE["hello_user"], $_COOKIE["nihao_user"]);
+	if ( !isset($_SESSION["user_id"]) )
+	{
+		$_SESSION["user_id"] = $_COOKIE["hello_user"];
+		$user_id = $_SESSION["user_id"];
+	}
+}
+else 
+{
+	//$user_id = suiji;
+	$user_show_name = "guest";
+}
+?>
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -45,7 +70,9 @@
 	</head>
 
 	<body>
-		<h1>单词分级</h1><a href="http://173.234.55.160/bbs/index.php" target="_blank">关于这个应用我要说两句</a>
+		<h1>单词分级</h1>
+		<p><?php echo "欢迎 " . $user_show_name . "!"; ?></p>
+		<a href="http://173.234.55.160/bbs/index.php" target="_blank">关于这个应用我要说两句</a>
 		<form action="" method="post" enctype="text/plain">
 			请粘贴整篇英语文本到下面的文本框中，选择过滤单词的难度级别，我们将迅速找出您可能不会的生词！
 			<textarea rows="10" cols="100" ></textarea>
