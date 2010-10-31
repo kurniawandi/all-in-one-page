@@ -18,12 +18,12 @@
 	<body>
 <?php
 
-include_once("./include/config.php");
+include_once("./setting.php");
 include_once("./login.php");
 global $super_pw;
 if ( isset($_POST["login"]) && isset($_POST["passwd"]) )
 {
-	if ( $_SESSION["login_times"] >= 3 )
+	if ( isset ($_SESSION["login_times"]) && $_SESSION["login_times"] >= 3 )
 	{
 		if (true)	//验证码正确
 		{
@@ -77,7 +77,7 @@ if ( isset($_POST["login"]) && isset($_POST["passwd"]) )
 		}
 		else
 		{
-			if ($_SESSION["login_times"] > 2)
+			if ( isset ($_SESSION["login_times"]) && $_SESSION["login_times"] > 2)
 			{
 				$_SESSION["login_times"] += 1;
 				$_SESSION["login_code"] = "";

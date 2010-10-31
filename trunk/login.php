@@ -1,8 +1,8 @@
 <?php
 
-//include_once("./include/config.php");
-require_once("./include/config.php");
-include_once("./include/db.php");
+//include_once(ABSPATH . "setting.php");
+include_once(ABSPATH . "include/config.php");
+include_once(ABSPATH . "include/db.php");
 function show_page_login ()
 {
 ?>
