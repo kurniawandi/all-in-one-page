@@ -1,13 +1,14 @@
 <?php
-if ( isset($_SESSION["nihao"]) )
+session_start();
+if ( isset($_SESSION["user_id"]) )
 {
-echo $_SESSION["nihao"];
+echo $_SESSION["user_id"];
 }
 else
 {
 echo "fail!";
 }
-echo $_SESSION["nihao"];
+echo $_SESSION["user_id"];
 
 ?>
 

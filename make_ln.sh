@@ -15,5 +15,6 @@ cp -lf ./include/js/jquery-1.4.2.min.js /var/www/include/js/
 cp -lf ./include/js/common.js /var/www/include/js/ 
 cp -lrf ./beidanci/js/ /var/www/beidanci/ 
 cp -lrf ./beidanci/css/ /var/www/beidanci/
+cp -lrf ./beidanci/include/ /var/www/beidanci/
 cp -lrf ./beidanci/self-improvement/ /var/www/beidanci/
 
