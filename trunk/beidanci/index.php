@@ -20,7 +20,9 @@ else if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) &&
 }
 else 
 {
-	//$user_id = suiji;
+	//为使随机数的乱度最大，每次在取随机数之前最好使用srand()以配置新的随机数种子
+	srand((double)microtime()*1000000);
+	$user_id = rand(1000, 999999);
 	$user_show_name = "guest";
 }
 ?>
