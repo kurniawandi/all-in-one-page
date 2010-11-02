@@ -2,27 +2,28 @@
 session_start();
 include_once("../setting.php");
 include_once(ABSPATH . "login.php");
+include_once(ABSPATH . "beidanci/include/functions.php");
 if ( isset($_SESSION["user_id"]) && isset($_SESSION["user_show_name"]) )
 {
 	$user_id = $_SESSION["user_id"];
 	$user_show_name = $_SESSION["user_show_name"];
+	set_user_visit_time($user_id);
 	set_auto_login_cookies($user_id);
 }
 else if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) && 
 		md5($_COOKIE["hello_user"].$super_pw) == $_COOKIE["nihao_user"] )
 {
-	set_auto_login_cookies($_COOKIE["hello_user"], $_COOKIE["nihao_user"]);
 	if ( !isset($_SESSION["user_id"]) )
 	{
 		$_SESSION["user_id"] = $_COOKIE["hello_user"];
 		$user_id = $_SESSION["user_id"];
 	}
+	set_user_visit_time($user_id);
+	set_auto_login_cookies($_COOKIE["hello_user"], $_COOKIE["nihao_user"]);
 }
 else 
 {
-	//为使随机数的乱度最大，每次在取随机数之前最好使用srand()以配置新的随机数种子
-	srand((double)microtime()*1000000);
-	$user_id = rand(1000, 999999);
+	$user_id = rand_id();
 	$user_show_name = "guest";
 }
 ?>
