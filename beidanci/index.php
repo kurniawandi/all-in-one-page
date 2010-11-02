@@ -3,27 +3,34 @@ session_start();
 include_once("../setting.php");
 include_once(ABSPATH . "login.php");
 include_once(ABSPATH . "beidanci/include/functions.php");
+include_once(ABSPATH . "include/functions.php");
 if ( isset($_SESSION["user_id"]) && isset($_SESSION["user_show_name"]) )
 {
 	$user_id = $_SESSION["user_id"];
 	$user_show_name = $_SESSION["user_show_name"];
+	try
+	{
 	set_user_visit_time($user_id);
 	set_auto_login_cookies($user_id);
+	}
+	catch (Exception $e)
+	{
+		echo "Exception : " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine();
+	}
 }
 else if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) && 
 		md5($_COOKIE["hello_user"].$super_pw) == $_COOKIE["nihao_user"] )
 {
-	if ( !isset($_SESSION["user_id"]) )
-	{
-		$_SESSION["user_id"] = $_COOKIE["hello_user"];
-		$user_id = $_SESSION["user_id"];
-	}
+	$_SESSION["user_id"] = $_COOKIE["hello_user"];
+	$_SESSION["user_show_name"] = get_show_name_by_id ($_SESSION["user_id"]);
+	$user_id = $_SESSION["user_id"];
+	$user_show_name = $_SESSION["user_show_name"];
 	set_user_visit_time($user_id);
 	set_auto_login_cookies($_COOKIE["hello_user"], $_COOKIE["nihao_user"]);
 }
 else 
 {
-	$user_id = rand_id();
+	$user_id = generate_rand_id();
 	$user_show_name = "guest";
 }
 ?>
