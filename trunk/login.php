@@ -25,7 +25,7 @@ function show_page_login ()
 <?php
 }
 
-function show_user_info_center ()
+function show_user_info_center ($user_id=null, $user_show_name=null)
 {
 	if ( !isset($_SESSION["user_show_name"]) )
 	{
@@ -74,18 +74,18 @@ function user_exists ($user_email, $user_pw)
 	return false;
 }
 
-function set_auto_login_cookies ($user_id, $md5_pw=null)
+function set_auto_login_cookies ($user_id, $md5_pw=null, $path="/")
 {
 	global $super_pw;
 	$log_interval = 15*24*60*60;
-	setcookie("hello_user", $user_id, (time()+$log_interval), '/', '', 0);//一周
+	setcookie("hello_user", $user_id, (time()+$log_interval), $path, '', 0);//一周
 	if ($md5_pw == null)
 	{
-		setcookie("nihao_user", md5($user_id.$super_pw), (time()+$log_interval), '/', '', 0);
+		setcookie("nihao_user", md5($user_id.$super_pw), (time()+$log_interval), $path, '', 0);
 	}
 	else
 	{
-		setcookie("nihao_user", $md5_pw, (time()+$log_interval), '/', '', 0);
+		setcookie("nihao_user", $md5_pw, (time()+$log_interval), $path, '', 0);
 	}
 }
 

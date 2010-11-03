@@ -3,15 +3,19 @@ session_start();
 include_once("../setting.php");
 include_once(ABSPATH . "login.php");
 include_once(ABSPATH . "beidanci/include/functions.php");
+include_once(ABSPATH . "include/config.php");
 include_once(ABSPATH . "include/functions.php");
 if ( isset($_SESSION["user_id"]) && isset($_SESSION["user_show_name"]) )
 {
-	$user_id = $_SESSION["user_id"];
-	$user_show_name = $_SESSION["user_show_name"];
+	//$user_id = $_SESSION["user_id"];
+	$_SESSION["bdc_user_id"] = $_SESSION["user_id"];
+	//$user_show_name = $_SESSION["user_show_name"];
+	$_SESSION["bdc_user_show_name"] = $_SESSION["user_show_name"];
 	try
 	{
-	set_user_visit_time($user_id);
-	set_auto_login_cookies($user_id);
+	set_user_visit_time($_SESSION["bdc_user_id"]);
+	//set_auto_login_cookies($user_id, null, "/beidanci/");
+	set_auto_login_cookies($_SESSION["bdc_user_id"]);
 	}
 	catch (Exception $e)
 	{
@@ -21,17 +25,40 @@ if ( isset($_SESSION["user_id"]) && isset($_SESSION["user_show_name"]) )
 else if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) && 
 		md5($_COOKIE["hello_user"].$super_pw) == $_COOKIE["nihao_user"] )
 {
-	$_SESSION["user_id"] = $_COOKIE["hello_user"];
-	$_SESSION["user_show_name"] = get_show_name_by_id ($_SESSION["user_id"]);
-	$user_id = $_SESSION["user_id"];
-	$user_show_name = $_SESSION["user_show_name"];
-	set_user_visit_time($user_id);
-	set_auto_login_cookies($_COOKIE["hello_user"], $_COOKIE["nihao_user"]);
+	if ($_COOKIE["hello_user"] >=1000 && $_COOKIE["hello_user"] <= 999999 )
+	{
+		$_SESSION["bdc_user_id"] = $_COOKIE["hello_user"];
+		$_SESSION["bdc_user_show_name"] = "guest";
+	}
+	else 
+	{
+		$_SESSION["user_id"] = $_COOKIE["hello_user"];
+		$_SESSION["bdc_user_id"] = $_COOKIE["hello_user"];
+		$_SESSION["user_show_name"] = get_show_name_by_id ($_SESSION["user_id"]);
+		$_SESSION["bdc_user_show_name"] = $_SESSION["user_show_name"];
+	}
+	//$user_id = $_SESSION["bdc_user_id"];
+	//$user_show_name = $_SESSION["bdc_user_show_name"];
+	set_user_visit_time($_SESSION["bdc_user_id"]);
+	set_auto_login_cookies($_SESSION["bdc_user_id"]);
+	//set_auto_login_cookies($_COOKIE["hello_user"], $_COOKIE["nihao_user"]);
 }
+//未注册用户第一次登录
 else 
 {
-	$user_id = generate_rand_id();
-	$user_show_name = "guest";
+	$_SESSION["bdc_user_id"] = generate_rand_id();
+	$_SESSION["bdc_user_show_name"] = "guest";
+	//$user_id = $_SESSION["bdc_user_id"];
+	//$user_show_name = $_SESSION["bdc_user_show_name"];
+	try
+	{
+	set_user_visit_time($_SESSION["bdc_user_id"]);
+	set_auto_login_cookies($_SESSION["bdc_user_id"]);
+	}
+	catch (Exception $e)
+	{
+		echo "Exception : " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine();
+	}
 }
 ?>
 <!DOCTYPE HTML>
@@ -82,7 +109,7 @@ else
 
 	<body>
 		<h1>单词分级</h1>
-		<p><?php echo "欢迎 " . $user_show_name . "!"; ?></p>
+		<p><?php echo "欢迎 " . $_SESSION["bdc_user_show_name"] . "!"; ?></p>
 		<a href="http://173.234.55.160/bbs/index.php" target="_blank">关于这个应用我要说两句</a>
 		<form action="" method="post" enctype="text/plain">
 			请粘贴整篇英语文本到下面的文本框中，选择过滤单词的难度级别，我们将迅速找出您可能不会的生词！
