@@ -21,8 +21,10 @@
 include_once("./setting.php");
 include_once("./login.php");
 global $super_pw;
+//登录验证
 if ( isset($_POST["login"]) && isset($_POST["passwd"]) )
 {
+	//登录次数超过3就要验证码了
 	if ( isset ($_SESSION["login_times"]) && $_SESSION["login_times"] >= 3 )
 	{
 		if (true)	//验证码正确
@@ -63,6 +65,7 @@ if ( isset($_POST["login"]) && isset($_POST["passwd"]) )
 	}
 	else
 	{
+		//数据库中存在此用户
 		if ( ($id_name = user_exists($_POST["login"], $_POST["passwd"])) != false )
 		{
 			$id_name_array = preg_split("/ /", $id_name);
@@ -91,6 +94,7 @@ if ( isset($_POST["login"]) && isset($_POST["passwd"]) )
 		}
 	}
 }
+//用户登出
 else if ( isset($_GET["logout"]) && $_GET["logout"]=="1" )
 {
 	if ( isset ($_SESSION["user_id"]) )
@@ -103,10 +107,12 @@ else if ( isset($_GET["logout"]) && $_GET["logout"]=="1" )
 	unset($_SESSION["user_show_name"]);
 	show_page_login();
 }
-else if ( isset($_SESSION["user_id"]) && isset($_SESSION["user_show_name"]) )
+//从别的页面跳转
+else if ( isset($_SESSION["user_id"]) && isset($_SESSION["user_show_name"]) && $_SESSION["user_id"] >= 1000000 )
 {
 	show_user_info_center();
 }
+//自动登录
 else if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) && 
 		md5($_COOKIE["hello_user"].$super_pw) == $_COOKIE["nihao_user"] )
 {
