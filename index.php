@@ -19,7 +19,8 @@
 <?php
 
 include_once("./setting.php");
-include_once("./login.php");
+include_once(ABSPATH . "login.php");
+include_once(ABSPATH . "include/functions.php");
 global $super_pw;
 //登录验证
 if ( isset($_POST["login"]) && isset($_POST["passwd"]) )
@@ -121,7 +122,15 @@ else if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) &&
 	{
 		$_SESSION["user_id"] = $_COOKIE["hello_user"];
 	}
-	show_user_info_center();
+	if (($_SESSION["user_show_name"] = get_show_name_by_id($_SESSION["user_id"])) == null )
+	{
+		$_SESSION["user_show_name"] = "guest";
+		show_page_login();
+	}
+	else
+	{
+		show_user_info_center();
+	}
 }
 else
 {

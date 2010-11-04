@@ -3,8 +3,9 @@ session_start();
 include_once("../setting.php");
 include_once(ABSPATH . "login.php");
 include_once(ABSPATH . "beidanci/include/functions.php");
-include_once(ABSPATH . "include/config.php");
 include_once(ABSPATH . "include/functions.php");
+global $super_pw;
+//来自于网页跳转的用户
 if ( isset($_SESSION["user_id"]) && isset($_SESSION["user_show_name"]) )
 {
 	//$user_id = $_SESSION["user_id"];
@@ -22,6 +23,7 @@ if ( isset($_SESSION["user_id"]) && isset($_SESSION["user_show_name"]) )
 		echo "Exception : " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine();
 	}
 }
+//已注册用户或已使用过这个应用的非注册用户
 else if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) && 
 		md5($_COOKIE["hello_user"].$super_pw) == $_COOKIE["nihao_user"] )
 {
@@ -111,6 +113,7 @@ else
 		<h1>单词分级</h1>
 		<p><?php echo "欢迎 " . $_SESSION["bdc_user_show_name"] . "!"; ?></p>
 		<a href="http://173.234.55.160/bbs/index.php" target="_blank">关于这个应用我要说两句</a>
+		<div id="hint_tips"></div>
 		<form action="" method="post" enctype="text/plain">
 			请粘贴整篇英语文本到下面的文本框中，选择过滤单词的难度级别，我们将迅速找出您可能不会的生词！
 			<textarea rows="10" cols="100" ></textarea>
@@ -255,24 +258,29 @@ else
 			event.preventDefault();
 		});
 		$(".add_to_known").live ("click", function (event) {
-			var trans_word = $(this).attr("id").split("@")[0];
-			alert(trans_word);
+			var known_word = $(this).attr("id").split("@")[0];
+			var this_button = $(this);
 			$.ajax({
 				type: "POST",
 				url: "http://" + server_address + "/beidanci/add_to_known.php",
-				//data: { word : trans_word, level : level_id },
+				data: { word : known_word },
 				//error can do a lot of work! try to connect like google.
 				//in function ajax can do recursively until connected to server.
-				error: function(XMLHttpRequest, textStatus, errorThrown){ 
+				error: function(XMLHttpRequest, textStatus, errorThrown) { 
 					alert(textStatus);
 					alert(errorThrown);
 				},
 				success: function (xml) {
-					alert("=========" + xml);
+					if ( xml == "OK" )
+					{
+						this_button.parent().parent().fadeOut("slow");
+					}
+					else
+					{
+						$("#hint_tips").text("忽略失败，请稍候再试。");
+					}
 				}//end of success
-				//加入哪个生词本
 			});//end of ajax
-		
 		});
 		$(window).keydown(function(event) {
 			//alert(event.keyCode);

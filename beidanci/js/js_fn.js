@@ -111,6 +111,7 @@ function show_statistic_result (xml, last_level)
 {
 	var res_html = new Array();//每个级别的html保存在这个数组的一个元素中
 	var j = 1;
+	//每个循环建一个表
 	$(xml).find("level").each (function () {
 		var this_id = $(this).attr("id");//取值为0-7
 		res_html[j] = "<div id=\"level" + this_id + "_container\">";
@@ -134,6 +135,7 @@ function show_statistic_result (xml, last_level)
 		var row_array = new Array();
 		var i = 0;
 		//将行的html放入到数组中
+		//每个循环得到一个行
 		$(this).find("word").each (function () {
 			if (last_level != this_id)
 			{

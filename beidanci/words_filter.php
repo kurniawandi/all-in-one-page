@@ -1,8 +1,7 @@
 <?php
-
+session_start();
 //include_once("./functions_for_filter.php");
 include_once("../include/db.php");
-//header("Content-Type: text/xml");
 $_SESSION["nihao"] = "ajax got session also!";
 if ( isset ($_POST["text"]) )
 {
@@ -39,20 +38,19 @@ $dbcnx = connect_db($db_name);
 
 $level_array = array();
 $leveled_data = array();
+
+//遍历不同难度级别的表
 for ($index = 1; $index <= $selected_level; $index++)
 {
-	//遍历同一难度级别的所有表，将表中的单词存入到数组level_array
-	//for ($i = 0; $i < sizeof ($suffix_array); $i++)
+	$sql = "select * from level" .$index. "_words;";
+	$result = mysql_query($sql);
+	//载入$index级别的所有单词
+	while ( $row = mysql_fetch_array($result, MYSQL_BOTH) )
 	{
-		//$sql = "select * from level" .$index. "_words_" .$suffix_array[$i]. ";";
-		$sql = "select * from level" .$index. "_words;";
-		$result = mysql_query($sql);
-		while ( $row = mysql_fetch_array($result, MYSQL_BOTH) )
-		{
-			//词库里的单词是不重复的
-			$level_array[$row["word"]] = $index;
-		}
+		//词库里的单词是不重复的
+		$level_array[$row["word"]] = $index;
 	}
+	//载入此用户不用统计的单词
 	//遍历用户上传文本，找出在同一难度级别的单词，找到后在数组leveled_data中记录出现的次数，并从data_array中删除
 	foreach ($data_array as $key => $value)
 	{
