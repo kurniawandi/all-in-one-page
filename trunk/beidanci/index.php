@@ -271,6 +271,8 @@ else
 					alert(errorThrown);
 				},
 				success: function (xml) {
+					//trim这一步是必须的
+					xml = $.trim(xml);
 					if ( xml == "OK" )
 					{
 						this_button.parent().parent().fadeOut("slow");
