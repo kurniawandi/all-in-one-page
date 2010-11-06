@@ -14,7 +14,10 @@ if ( isset($_POST["word"]) && isset($_SESSION["bdc_user_id"]) )
 	{
 		echo mysql_error();
 	}
-	echo "OK";
+	else
+	{
+		echo "OK";
+	}
 }
 
 ?>
