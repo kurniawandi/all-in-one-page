@@ -39,7 +39,7 @@ $dbcnx = connect_db($db_name);
 $level_array = array();
 $leveled_data = array();
 
-//$begin = microtime(true);
+$begin = microtime(true);
 
 //载入此用户不用统计的单词
 $sql = "select * from bdc_known_words where kw_user_id = " . $_SESSION["bdc_user_id"] . ";";
@@ -123,10 +123,10 @@ foreach ( $leveled_data as $k => $v)
 
 $xml_data .= "</result>";
 
-//$end = microtime(true);
+$end = microtime(true);
 
-header("Content-Type: text/xml");
-//echo $end - $begin;
+//header("Content-Type: text/xml");
+echo $end - $begin;
 echo $xml_data;
 
 ?>
