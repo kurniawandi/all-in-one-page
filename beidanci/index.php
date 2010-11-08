@@ -198,7 +198,7 @@ else
 						alert(errorThrown);
 					},
 					success: function (xml) {
-						alert(xml);
+						//alert(xml);
 						//取出传过来的最后一个level的id
 						var last_level = parseInt($("level:last", xml).attr("id"));
 						$("div#stat_result").empty();
@@ -276,6 +276,7 @@ else
 					if ( xml == "OK" )
 					{
 						this_button.parent().parent().fadeOut("slow");
+						$("span#remain").text( parseInt($("span#remain").text()) - 1 );
 					}
 					else
 					{

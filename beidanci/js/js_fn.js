@@ -118,7 +118,8 @@ function show_statistic_result (xml, last_level)
 		res_html[j] += "<div id=\"" + this_id + "\" class=\"tab_bar\">";
 		if (this_id == last_level)
 		{
-			res_html[j] += "<a class=\"hid_button\" href=\"\">过滤后剩下单词" + $(this).attr("amount") + "个：</a>";
+			res_html[j] += "<a class=\"hid_button\" href=\"\">过滤后剩下单词";
+			res_html[j] += "<span id=\"remain\">"+ $(this).attr("amount") + "</span>个：</a>";
 		}
 		else
 		{

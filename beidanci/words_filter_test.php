@@ -7,21 +7,8 @@ if ( isset ($_POST["text"]) )
 {
 	//$text_data = $_POST["text"];
 	//搜索值和搜索键的效率不一样
-	//$data_array = preg_split("/ /", $_POST["text"]);
-	$temp_array = preg_split("/ /", $_POST["text"]);
-	$total_words = count ($temp_array);
-	$data_array = array();
-	foreach ($temp_array as $key => $value) 
-	{
-		if ( isset($data_array[$value]) )
-		{
-			$data_array[$value] += 1;
-		}
-		else
-		{
-			$data_array[$value] = 1;
-		}
-	}
+	$data_array = preg_split("/ /", $_POST["text"]);
+	$total_words = count ($data_array);
 	//array_flip($date_array);
 	if ( isset ($_POST["selected"]) )
 	{
@@ -65,7 +52,7 @@ while ( $row = mysql_fetch_array($result, MYSQL_BOTH) )
 foreach ($data_array as $key => $value)
 {
 	//文本中的这个单词是否在这个难度级别里
-	if ( isset($level_array[$key]) )
+	if ( isset($level_array[$value]) )
 	{
 		unset ($data_array[$key]);
 	}
@@ -89,9 +76,16 @@ for ($index = 1; $index <= $selected_level; $index++)
 	foreach ($data_array as $key => $value)
 	{
 		//文本中的这个单词是否在这个难度级别里
-		if (isset($level_array[$key]))
+		if (isset($level_array[$value]))
 		{
-			$leveled_data[$index][$key] = $value;
+			if ( isset($leveled_data[$index][$value]) )
+			{
+				$leveled_data[$index][$value] += 1;
+			}
+			else
+			{
+				$leveled_data[$index][$value] = 1;
+			}
 			unset ($data_array[$key]);
 		}
 	}
@@ -104,7 +98,14 @@ mysql_close ($dbcnx);
 $last_level = 7;// count ($leveled_data) + 1;
 foreach ($data_array as $key => $value)
 {
-	$leveled_data[$last_level][$key] = $value;
+	if ( isset($leveled_data[$last_level][$value]) )
+	{
+		$leveled_data[$last_level][$value] += 1;
+	}
+	else
+	{
+		$leveled_data[$last_level][$value] = 1;
+	}
 	unset ($data_array[$key]);
 }//data_array在这一步之后变为空
 
