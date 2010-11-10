@@ -136,6 +136,11 @@ else
 		</form>
 		<div id="stat_result">
 		</div>
+		<div id="log_reg" style= "background-color:red; position:absolute; z-index:10;">
+			<?php
+				show_page_login();
+			?>
+		</div>
 		<hr />
 		<center><div id="footer">author XBQ</div></center>
 		<script type="text/javascript">
@@ -276,6 +281,7 @@ else
 					if ( xml == "OK" )
 					{
 						this_button.parent().parent().fadeOut("slow");
+						//将剩余单词数减一
 						$("span#remain").text( parseInt($("span#remain").text()) - 1 );
 					}
 					else
