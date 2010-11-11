@@ -136,9 +136,10 @@ else
 		</form>
 		<div id="stat_result">
 		</div>
+		<div id="hint_window"></div>
 		<div id="log_reg" style= "background-color:red; position:absolute; z-index:10;">
 			<?php
-				show_page_login();
+				//show_page_login();
 			?>
 		</div>
 		<hr />
@@ -247,16 +248,36 @@ else
 			event.preventDefault();
 		});
 		$(".add_to_lib").live ("click", function (event) {
-			//var trans_word = $(this).attr("id").split("@")[0];
-			//var level_id = $(this).parent().parent().parent().parent().attr("id").substring(5, 6);
+			var add_word = $(this).attr("id").split("@")[0];
+			var this_button = $(this);
+			this_button.attr("disabled", "true");
 			$.ajax({
 				type: "POST",
-				url: "http://" + server_address + "/beidanci/record_difficulty.php",
-				data: { word : trans_word, level : level_id },
+				url: "http://" + server_address + "/beidanci/add_to_word_book.php",
+				data: { word : add_word },
 				//error can do a lot of work! try to connect like google.
 				//in function ajax can do recursively until connected to server.
 				error: function() { alert("Network error."); },
 				success: function (xml) {
+					//trim这一步是必须的
+					xml = $.trim(xml);
+					alert (xml);
+					if ( "OK" == xml )
+					{
+						//
+					}
+					else if ( "ERROR" == xml )
+					{
+						this_button.attr ("disabled", "");
+					}
+					else if ( "EXIST" == xml )
+					{
+						this_button.attr ("disabled", "");
+					}
+					else if ( "NOTLOGGEDIN" == xml )
+					{
+						this_button.attr ("disabled", "");
+					}
 				}//end of success
 				//加入哪个生词本
 			});//end of ajax
