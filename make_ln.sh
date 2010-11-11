@@ -9,6 +9,7 @@ cp -lf ./beidanci/record_difficulty.php /var/www/beidanci/
 cp -lf ./beidanci/words_filter.php /var/www/beidanci/ 
 cp -lf ./beidanci/words_filter_test.php /var/www/beidanci/ 
 cp -lf ./beidanci/add_to_known.php /var/www/beidanci/ 
+cp -lf ./beidanci/add_to_word_book.php /var/www/beidanci/ 
 #cp -lf ./include/db.php /var/www/include/
 cp -lf ./include/email_exists.php /var/www/include/ 
 cp -lf ./include/functions.php /var/www/include/ 
