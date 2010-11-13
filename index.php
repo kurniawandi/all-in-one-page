@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php
+session_start();
+ob_start();
+?>
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -17,7 +20,6 @@
 
 	<body>
 <?php
-
 include_once("./setting.php");
 include_once(ABSPATH . "login.php");
 include_once(ABSPATH . "include/functions.php");
@@ -36,7 +38,14 @@ if ( isset($_POST["login"]) && isset($_POST["passwd"]) )
 				$user_id = $id_name_array[0];
 				if ( isset($_POST["remember"]) )
 				{
-					set_auto_login_cookies($user_id);
+					try
+					{
+						set_auto_login_cookies($user_id);
+					}
+					catch (Exception $e)
+					{
+						echo "Exception : " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine() . __LINE__;
+					}
 				}
 				$_SESSION["user_id"] = $user_id;
 				$_SESSION["user_show_name"] = $id_name_array[1];
@@ -73,7 +82,15 @@ if ( isset($_POST["login"]) && isset($_POST["passwd"]) )
 			$user_id = $id_name_array[0];
 			if ( isset($_POST["remember"]) )
 			{
+				try
+				{
 				set_auto_login_cookies($user_id);
+				}
+				catch (Exception $e)
+				{
+				echo "Exception : " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine();
+				echo "; caught on line " . __LINE__;
+				}
 			}
 			$_SESSION["user_id"] = $user_id;
 			$_SESSION["user_show_name"] = $id_name_array[1];
@@ -114,17 +131,27 @@ else if ( isset($_SESSION["user_id"]) && isset($_SESSION["user_show_name"]) && $
 	show_user_info_center();
 }
 //自动登录
-else if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) && 
+else if ( isset($_COOKIE["hello_user"]) && intval($_COOKIE["hello_user"]) < 1000 && 
+		intval($_COOKIE["hello_user"]) > 1000000 && isset($_COOKIE["nihao_user"]) && 
 		md5($_COOKIE["hello_user"].$super_pw) == $_COOKIE["nihao_user"] )
 {
+	try
+	{
 	set_auto_login_cookies($_COOKIE["hello_user"], $_COOKIE["nihao_user"]);
+	}
+	catch (Exception $e)
+	{
+	echo "Exception : " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine();
+	echo "; caught on line " . __LINE__;
+	}
 	if ( !isset($_SESSION["user_id"]) )
 	{
 		$_SESSION["user_id"] = $_COOKIE["hello_user"];
 	}
 	if (($_SESSION["user_show_name"] = get_show_name_by_id($_SESSION["user_id"])) == null )
 	{
-		$_SESSION["user_show_name"] = "guest";
+		//$_SESSION["user_show_name"] = "guest";
+		unset($_SESSION["user_id"]);
 		show_page_login();
 	}
 	else
@@ -137,7 +164,7 @@ else
 	$_SESSION["login_times"] = 0;
 	show_page_login();
 }
-
+ob_end_flush();
 ?>
 		<script type="text/javascript">
 		//帐号的首位是不能有空格存在的，密码可以

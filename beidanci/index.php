@@ -13,12 +13,14 @@ if ( isset($_SESSION["user_id"]) && isset($_SESSION["user_show_name"]) )
 	$_SESSION["bdc_user_show_name"] = $_SESSION["user_show_name"];
 	try
 	{
+		echo "hi0";
 	set_user_visit_time($_SESSION["bdc_user_id"]);
 	set_auto_login_cookies($_SESSION["bdc_user_id"]);
 	}
 	catch (Exception $e)
 	{
-		echo "Exception : " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine() . __LINE__;
+		echo "Exception : " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine();
+		echo "; caught on line " . __LINE__;
 	}
 }
 //已注册用户或已使用过这个应用的非注册用户
@@ -27,18 +29,29 @@ else if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) &&
 {
 	if ( intval($_COOKIE["hello_user"]) >=1000 && intval($_COOKIE["hello_user"]) <= 999999 )
 	{
+		echo "hi1";
 		$_SESSION["bdc_user_id"] = $_COOKIE["hello_user"];
 		$_SESSION["bdc_user_show_name"] = "guest";
 	}
 	else 
 	{
+		echo "hi2";
 		$_SESSION["user_id"] = $_COOKIE["hello_user"];
 		$_SESSION["bdc_user_id"] = $_COOKIE["hello_user"];
 		$_SESSION["user_show_name"] = get_show_name_by_id ($_SESSION["user_id"]);
 		$_SESSION["bdc_user_show_name"] = $_SESSION["user_show_name"];
 	}
+	try
+	{
+		echo "hi3";
 	set_user_visit_time($_SESSION["bdc_user_id"]);
 	set_auto_login_cookies($_SESSION["bdc_user_id"]);
+	}
+	catch (Exception $e)
+	{
+	echo "Exception : " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine();
+	echo "; caught on line " . __LINE__;
+	}
 }
 //未注册用户第一次登录
 else 
@@ -49,6 +62,7 @@ else
 	//$user_show_name = $_SESSION["bdc_user_show_name"];
 	try
 	{
+		echo "hi5";
 	set_user_visit_time($_SESSION["bdc_user_id"]);
 	set_auto_login_cookies($_SESSION["bdc_user_id"]);
 	}
@@ -114,7 +128,9 @@ else
 	<body style="font-size:100%;">
 		<h1>单词分级</h1>
 		<p><?php echo "欢迎 " . $_SESSION["bdc_user_show_name"] . "!"; ?></p>
+		<!--
 		<a href="http://173.234.55.160/bbs/index.php" target="_blank">关于这个应用我要说两句</a>
+		-->
 		<div id="hint_tips"></div>
 		<form action="" method="post" enctype="text/plain">
 			请粘贴整篇英语文本到下面的文本框中，选择过滤单词的难度级别，我们将迅速找出您可能不会的生词！
@@ -140,7 +156,7 @@ else
 		</div>
 		<div id="hint_window"></div>
 		<div id="log_reg" style="display:none;">
-			您尚未登录，请<a href="">登录</a>或者<a href="">注册</a>，谢谢！
+			您尚未登录，请<a href="http://173.234.55.160">登录</a>或者<a href="http://173.234.55.160/beidanci/registration.php">注册</a>，谢谢！
 			<?php
 				//show_page_login();
 			?>
