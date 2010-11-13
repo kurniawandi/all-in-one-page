@@ -8,14 +8,11 @@ global $super_pw;
 //来自于网页跳转的用户
 if ( isset($_SESSION["user_id"]) && isset($_SESSION["user_show_name"]) )
 {
-	//$user_id = $_SESSION["user_id"];
 	$_SESSION["bdc_user_id"] = $_SESSION["user_id"];
-	//$user_show_name = $_SESSION["user_show_name"];
 	$_SESSION["bdc_user_show_name"] = $_SESSION["user_show_name"];
 	try
 	{
 	set_user_visit_time($_SESSION["bdc_user_id"]);
-	//set_auto_login_cookies($user_id, null, "/beidanci/");
 	set_auto_login_cookies($_SESSION["bdc_user_id"]);
 	}
 	catch (Exception $e)
@@ -27,7 +24,7 @@ if ( isset($_SESSION["user_id"]) && isset($_SESSION["user_show_name"]) )
 else if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) && 
 		md5($_COOKIE["hello_user"].$super_pw) == $_COOKIE["nihao_user"] )
 {
-	if ($_COOKIE["hello_user"] >=1000 && $_COOKIE["hello_user"] <= 999999 )
+	if ( intval($_COOKIE["hello_user"]) >=1000 && intval($_COOKIE["hello_user"]) <= 999999 )
 	{
 		$_SESSION["bdc_user_id"] = $_COOKIE["hello_user"];
 		$_SESSION["bdc_user_show_name"] = "guest";
@@ -39,15 +36,13 @@ else if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) &&
 		$_SESSION["user_show_name"] = get_show_name_by_id ($_SESSION["user_id"]);
 		$_SESSION["bdc_user_show_name"] = $_SESSION["user_show_name"];
 	}
-	//$user_id = $_SESSION["bdc_user_id"];
-	//$user_show_name = $_SESSION["bdc_user_show_name"];
 	set_user_visit_time($_SESSION["bdc_user_id"]);
 	set_auto_login_cookies($_SESSION["bdc_user_id"]);
-	//set_auto_login_cookies($_COOKIE["hello_user"], $_COOKIE["nihao_user"]);
 }
 //未注册用户第一次登录
 else 
 {
+	echo "nihao2";
 	$_SESSION["bdc_user_id"] = generate_rand_id();
 	$_SESSION["bdc_user_show_name"] = "guest";
 	//$user_id = $_SESSION["bdc_user_id"];

@@ -114,7 +114,7 @@ $(".add_to_lib").live ("click", function (event) {
 		success: function (xml) {
 			//trim这一步是必须的
 			xml = $.trim(xml);
-			//alert (xml);
+			alert (xml);
 			if ( "OK" == xml )
 			{
 				//
@@ -130,6 +130,10 @@ $(".add_to_lib").live ("click", function (event) {
 			else if ( "NOTLOGGEDIN" == xml )
 			{
 				$("#log_reg").dialog();
+				this_button.attr ("disabled", "");
+			}
+			else 
+			{
 				this_button.attr ("disabled", "");
 			}
 		}//end of success
