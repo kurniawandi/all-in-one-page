@@ -22,4 +22,3 @@ function get_show_name_by_id ($user_id)
 }
 
 ?>
-
