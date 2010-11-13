@@ -13,7 +13,7 @@ if ( isset($_SESSION["user_id"]) && isset($_SESSION["user_show_name"]) )
 	$_SESSION["bdc_user_show_name"] = $_SESSION["user_show_name"];
 	try
 	{
-		echo "hi0";
+		//echo "hi0";
 	set_user_visit_time($_SESSION["bdc_user_id"]);
 	set_auto_login_cookies($_SESSION["bdc_user_id"]);
 	}
@@ -29,13 +29,13 @@ else if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) &&
 {
 	if ( intval($_COOKIE["hello_user"]) >=1000 && intval($_COOKIE["hello_user"]) <= 999999 )
 	{
-		echo "hi1";
+		//echo "hi1";
 		$_SESSION["bdc_user_id"] = $_COOKIE["hello_user"];
 		$_SESSION["bdc_user_show_name"] = "guest";
 	}
 	else 
 	{
-		echo "hi2";
+		//echo "hi2";
 		$_SESSION["user_id"] = $_COOKIE["hello_user"];
 		$_SESSION["bdc_user_id"] = $_COOKIE["hello_user"];
 		$_SESSION["user_show_name"] = get_show_name_by_id ($_SESSION["user_id"]);
@@ -43,7 +43,7 @@ else if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) &&
 	}
 	try
 	{
-		echo "hi3";
+		//echo "hi3";
 	set_user_visit_time($_SESSION["bdc_user_id"]);
 	set_auto_login_cookies($_SESSION["bdc_user_id"]);
 	}
@@ -62,7 +62,7 @@ else
 	//$user_show_name = $_SESSION["bdc_user_show_name"];
 	try
 	{
-		echo "hi5";
+		//echo "hi5";
 	set_user_visit_time($_SESSION["bdc_user_id"]);
 	set_auto_login_cookies($_SESSION["bdc_user_id"]);
 	}
