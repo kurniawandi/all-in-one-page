@@ -131,7 +131,7 @@ function show_statistic_result (xml, last_level)
 		res_html[j] += "<input type=\"button\" class=\"all_translate\" value=\"翻译所有单词\" />";
 		res_html[j] += "<input type=\"button\" class=\"all_add_to_lib\" value=\"将所有单词加入生词本\" />";
 		res_html[j] += "</div><!--end of operation_bar-->";
-		res_html[j] += "<table id=\"level" + this_id + "\" border=\"1\">";
+		res_html[j] += "<table id=\"level" + this_id + "\" border=\"0\">";
 		res_html[j] += "<tr class=\"header\"><th>Word</th><th>Translation</th><th>Frequency</th><th>Operation</th></tr>";
 		var row_array = new Array();
 		var i = 0;
