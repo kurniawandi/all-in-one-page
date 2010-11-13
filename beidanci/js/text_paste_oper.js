@@ -114,7 +114,7 @@ $(".add_to_lib").live ("click", function (event) {
 		success: function (xml) {
 			//trim这一步是必须的
 			xml = $.trim(xml);
-			alert (xml);
+			//alert (xml);
 			if ( "OK" == xml )
 			{
 				//
