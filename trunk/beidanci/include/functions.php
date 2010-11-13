@@ -23,13 +23,13 @@ function set_user_visit_time ($user_id)
 	if ( mysql_num_rows($result) > 0 )
 	{
 		//更新
-		$sql = "update bdc_users set user_last_visit = now() where user_id = $user_id;";
+		$sql = "update bdc_users set user_last_visit = utc_timestamp() where user_id = $user_id;";
 		$result = mysql_query($sql);
 	}
 	else
 	{
 		//插入（插入的语句可以不要）
-		$sql = "insert into bdc_users (user_id, user_level, user_last_visit) values ('$user_id', '3', now());";
+		$sql = "insert into bdc_users (user_id, user_level, user_last_visit) values ('$user_id', '3', utc_timestamp());";
 		$result = mysql_query($sql);
 	}
 	mysql_close ($dbcnx);
@@ -41,7 +41,7 @@ function generate_user ($user_id)
 {
 	$db_name = "beidanci_db";
 	$dbcnx = connect_db($db_name);
-	$sql = "insert into bdc_users (user_id, user_level, user_last_visit) values ( '$user_id', '3', now());";
+	$sql = "insert into bdc_users (user_id, user_level, user_last_visit) values ( '$user_id', '3', utc_timestamp());";
 	$result = mysql_query($sql);
 	if ( $result == false )
 	{

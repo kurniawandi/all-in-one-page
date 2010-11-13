@@ -25,7 +25,7 @@ if ( isset($_POST["login"]) || isset($_POST["passwd1"]) )
 	$email = $_POST["login"];
 	$show_name_array = split("@", $email);
 	$pw_md5 = md5($_POST["passwd1"]);
-	$sql = "insert into core_users (user_email, user_show_name, user_passwd, user_registered) values ('" . $email . "', '" . $show_name_array[0] . "', '" . $pw_md5 . "', now());";
+	$sql = "insert into core_users (user_email, user_show_name, user_passwd, user_registered) values ('" . $email . "', '" . $show_name_array[0] . "', '" . $pw_md5 . "', utc_timestamp());";
 	echo $sql;
 	$result = mysql_query($sql);
 	if (!$result)

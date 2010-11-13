@@ -26,7 +26,7 @@ if ( isset($_POST["word"]) && isset($_SESSION["user_id"]) )
 		else
 		{
 			$sql = "insert into bdc_word_book (wb_user_id, wb_word, wb_word_status, wd_record_time) ";
-			$sql .= "values ('" .$_SESSION["bdc_user_id"]. "', '" .$_POST["word"]. "', 0, now());";
+			$sql .= "values ('" .$_SESSION["bdc_user_id"]. "', '" .$_POST["word"]. "', 0, utc_timestamp());";
 			$result = mysql_query($sql);
 			mysql_close ($dbcnx);
 			//插入成功
