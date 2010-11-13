@@ -156,7 +156,9 @@ else
 		</div>
 		<div id="hint_window"></div>
 		<div id="log_reg" style="display:none;">
-			您尚未登录，请<a href="http://173.234.55.160">登录</a>或者<a href="http://173.234.55.160/beidanci/registration.php">注册</a>，谢谢！
+			您尚未登录，请
+			<a href="http://<?php echo $server_addr;?>">登录</a>或者
+			<a href="http://<?php echo $server_addr;?>/registration.php">注册</a>，谢谢！
 			<?php
 				//show_page_login();
 			?>
