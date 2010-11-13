@@ -32,6 +32,7 @@ if ( isset($_POST["word"]) && isset($_SESSION["user_id"]) )
 			//插入成功
 			if ( $result != false )
 			{
+				echo $_SESSION["user_id"];
 				echo "OK";
 			}
 			else
