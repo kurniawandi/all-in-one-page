@@ -125,7 +125,7 @@ $(".add_to_lib").live ("click", function (event) {
 			}
 			else if ( "EXIST" == xml )
 			{
-				this_button.attr ("disabled", "");
+				//this_button.attr ("disabled", "");
 			}
 			else if ( "NOTLOGGEDIN" == xml )
 			{
