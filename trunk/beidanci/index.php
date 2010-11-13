@@ -1,6 +1,6 @@
 <?php
 session_start();
-ob_start();
+//ob_start();
 include_once("../setting.php");
 include_once(ABSPATH . "login.php");
 include_once(ABSPATH . "beidanci/include/functions.php");
@@ -58,7 +58,7 @@ else
 		echo "; caught on line " . __LINE__;
 	}
 }
-ob_end_flush();
+//ob_end_flush();
 ?>
 <!DOCTYPE HTML>
 <html>

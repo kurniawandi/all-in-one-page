@@ -67,4 +67,3 @@ function set_user_level ($user_id, $level)
 }
 
 ?>
-
