@@ -1,5 +1,6 @@
 <?php
 session_start();
+ob_start();
 include_once("../setting.php");
 include_once(ABSPATH . "login.php");
 include_once(ABSPATH . "beidanci/include/functions.php");
@@ -17,7 +18,7 @@ if ( isset($_SESSION["user_id"]) && isset($_SESSION["user_show_name"]) )
 	}
 	catch (Exception $e)
 	{
-		echo "Exception : " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine();
+		echo "Exception : " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine() . __LINE__;
 	}
 }
 //已注册用户或已使用过这个应用的非注册用户
@@ -42,7 +43,6 @@ else if ( isset($_COOKIE["hello_user"]) && isset($_COOKIE["nihao_user"]) &&
 //未注册用户第一次登录
 else 
 {
-	echo "nihao2";
 	$_SESSION["bdc_user_id"] = generate_rand_id();
 	$_SESSION["bdc_user_show_name"] = "guest";
 	//$user_id = $_SESSION["bdc_user_id"];
@@ -55,8 +55,10 @@ else
 	catch (Exception $e)
 	{
 		echo "Exception : " . $e->getMessage() . " in " . $e->getFile() . " on line " . $e->getLine();
+		echo "; caught on line " . __LINE__;
 	}
 }
+ob_end_flush();
 ?>
 <!DOCTYPE HTML>
 <html>

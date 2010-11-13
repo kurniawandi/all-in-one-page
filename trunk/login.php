@@ -1,5 +1,4 @@
 <?php
-
 //include_once(ABSPATH . "setting.php");
 include_once(ABSPATH . "include/config.php");
 include_once(ABSPATH . "include/db.php");
@@ -78,14 +77,23 @@ function set_auto_login_cookies ($user_id, $md5_pw=null, $path="/")
 {
 	global $super_pw;
 	$log_interval = 15*24*60*60;
-	setcookie("hello_user", $user_id, (time()+$log_interval), $path, '', 0);//一周
+	if ( false == setcookie("hello_user", $user_id, (time()+$log_interval), $path, '', 0)) //一周
+	{
+		throw new Exception ("Setcookie error: Output exists prior to calling this function");
+	}
 	if ($md5_pw == null)
 	{
-		setcookie("nihao_user", md5($user_id.$super_pw), (time()+$log_interval), $path, '', 0);
+		if ( false == setcookie("nihao_user", md5($user_id.$super_pw), (time()+$log_interval), $path, '', 0))
+		{
+			throw new Exception ("Setcookie error: Output exists prior to calling this function");
+		}
 	}
 	else
 	{
-		setcookie("nihao_user", $md5_pw, (time()+$log_interval), $path, '', 0);
+		if ( false == setcookie("nihao_user", $md5_pw, (time()+$log_interval), $path, '', 0) )
+		{
+			throw new Exception ("Setcookie error: Output exists prior to calling this function");
+		}
 	}
 }
 
@@ -105,4 +113,3 @@ function unset_auto_login_cookies ($user_id, $md5_pw=null)
 }
 
 ?>
-
