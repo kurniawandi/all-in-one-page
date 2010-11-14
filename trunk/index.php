@@ -131,8 +131,8 @@ else if ( isset($_SESSION["user_id"]) && isset($_SESSION["user_show_name"]) && $
 	show_user_info_center();
 }
 //自动登录
-else if ( isset($_COOKIE["hello_user"]) && intval($_COOKIE["hello_user"]) < 1000 && 
-		intval($_COOKIE["hello_user"]) > 1000000 && isset($_COOKIE["nihao_user"]) && 
+else if ( isset($_COOKIE["hello_user"]) && (intval($_COOKIE["hello_user"]) < 1000 || 
+		intval($_COOKIE["hello_user"]) > 1000000) && isset($_COOKIE["nihao_user"]) && 
 		md5($_COOKIE["hello_user"].$super_pw) == $_COOKIE["nihao_user"] )
 {
 	try
