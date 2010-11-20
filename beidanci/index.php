@@ -132,6 +132,13 @@ else
 		<a href="http://173.234.55.160/bbs/index.php" target="_blank">关于这个应用我要说两句</a>
 		-->
 		<div id="hint_tips"></div>
+		<div id="select_bar">
+			<a id="txt" class="sel_btn">文本粘贴</a>
+			<a id="url" class="sel_btn"></a>
+			<a id="wb"  class="sel_btn">单词本</a>
+		</div>
+
+		<div id="text_paste" class="page">
 		<form action="" method="post" enctype="text/plain">
 			请粘贴整篇英语文本到下面的文本框中，选择过滤单词的难度级别，我们将迅速找出您可能不会的生词！
 			<textarea rows="10" cols="100" ></textarea>
@@ -155,20 +162,57 @@ else
 		<div id="stat_result">
 		</div>
 		<div id="hint_window"></div>
+		</div><!--end of text paste-->
+		<div id="url_paste" class="page" style="diplay:none;" ></div><!--end of url paste-->
+		<div id="word_book" class="page" style="diplay:none;" >
+			<div id="oper_bar">
+				<select id="">
+				<option>将选中的单词</option>
+				<option>将尚未记忆的生词</option>
+				<option>将记忆过一次的单词</option>
+				<option>将记忆过两次的单词</option>
+				<option>将记忆过三次的单词</option>
+				</select><input type="button" value="开始艾宾浩斯周期" />
+				<select id="">
+				<option>将选中的单词</option>
+				<option>将记忆过三次以上的单词</option>
+				<option>将三个月之前的单词</option>
+				<option>将两个月之前的单词</option>
+				<option>将一个月之前的单词</option>
+				</select><input type="button" value="删除" />
+			</div>
+			<div id="word_book_container">
+			</div>
+		</div><!--end of word book-->
+
+
 		<div id="log_reg" style="display:none;">
 			您尚未登录，请
 			<a href="http://<?php echo $server_addr;?>">登录</a>或者
 			<a href="http://<?php echo $server_addr;?>/registration.php">注册</a>，谢谢！
-			<?php
-				//show_page_login();
-			?>
 		</div>
 		<hr />
 		<center><div id="footer">author XBQ</div></center>
 		<script type="text/javascript" src="./js/text_paste_oper.js"></script>
 		<script type="text/javascript">
+		$(".sel_btn").click ( function (event) {
+			event.preventDefault();
+			$(".page").css("display", "none");
+			var page_id = $(this).attr("id");
+			if ( "txt" == page_id )
+			{
+				$("div#text_paste").css("display", "");
+			}
+			else if ( "url" == page_id )
+			{
+				$("div#url_paste").css("display", "");
+			}
+			else if ( "wb" == page_id )
+			{
+				$("div#word_book").css("display", "");
+			}
+		});
 		</script>
 	</body>
 </html>
-
 
