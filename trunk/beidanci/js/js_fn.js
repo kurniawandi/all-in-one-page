@@ -171,6 +171,10 @@ function show_statistic_result (xml, last_level)
 	return res_html.join("");
 }
 
+function show_word_book (xml)
+{
+
+}
 
 function ShellSort(arr) { //插入排序->希儿排序
 	var st = new Date();
