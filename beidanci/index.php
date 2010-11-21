@@ -163,8 +163,8 @@ else
 		</div>
 		<div id="hint_window"></div>
 		</div><!--end of text paste-->
-		<div id="url_paste" class="page" style="diplay:none;" ></div><!--end of url paste-->
-		<div id="word_book" class="page" style="diplay:none;" >
+		<div id="url_paste" class="page" style="display:none;" ></div><!--end of url paste-->
+		<div id="word_book" class="page" style="display:none;" >
 			<div id="oper_bar">
 				<select id="">
 				<option>将选中的单词</option>
@@ -194,6 +194,7 @@ else
 		<hr />
 		<center><div id="footer">author XBQ</div></center>
 		<script type="text/javascript" src="./js/text_paste_oper.js"></script>
+		<script type="text/javascript" src="./js/word_book_oper.js"></script>
 		<script type="text/javascript">
 		$(".sel_btn").click ( function (event) {
 			event.preventDefault();
@@ -210,6 +211,30 @@ else
 			else if ( "wb" == page_id )
 			{
 				$("div#word_book").css("display", "");
+				$.ajax({
+					type: "POST",
+					url: "http://" + server_address + "/beidanci/open_word_book.php",
+					data: { },
+					//error can do a lot of work! try to connect like google.
+					//in function ajax can do recursively until connected to server.
+					error: function(XMLHttpRequest, textStatus, errorThrown){ 
+						alert(textStatus);
+						alert(errorThrown);
+					},
+					success: function (xml) {
+						//alert(xml);
+						//取出传过来的最后一个level的id
+						var last_level = parseInt($("level:last", xml).attr("id"));
+						$("div#stat_result").empty();
+						//显示统计结果
+						$("div#stat_result").append(show_statistic_result(xml, last_level));
+						$("div.content").hide();
+						//只show最难级别的
+						$("div#level" + last_level + "_content").show();
+						translate_table(last_level);
+						$("textarea").focus();
+					}//end of success
+				});//end of ajax
 			}
 		});
 		</script>
