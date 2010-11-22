@@ -224,15 +224,6 @@ else
 					success: function (xml) {
 						//alert(xml);
 						//取出传过来的最后一个level的id
-						var last_level = parseInt($("level:last", xml).attr("id"));
-						$("div#stat_result").empty();
-						//显示统计结果
-						$("div#stat_result").append(show_statistic_result(xml, last_level));
-						$("div.content").hide();
-						//只show最难级别的
-						$("div#level" + last_level + "_content").show();
-						translate_table(last_level);
-						$("textarea").focus();
 					}//end of success
 				});//end of ajax
 			}
