@@ -99,7 +99,7 @@ else
 					alert(errorThrown + " 2");
 				},
 				success: function (xml) {
-					alert(xml);
+					alert(typeof xml);
 					alert($(xml).find("def").val());
 					//取出传过来的最后一个level的id
 				}//end of success
