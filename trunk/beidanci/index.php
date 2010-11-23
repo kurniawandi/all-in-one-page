@@ -80,6 +80,8 @@ else
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<title>单词分级</title>
 		
+		<!--
+		-->
 		<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 		<script type="text/javascript" src="../include/js/jquery-1.4.2.min.js"></script>
 		<script type="text/javascript" src="./js/js_fn.js"></script>
@@ -88,20 +90,29 @@ else
 		<script type="text/javascript">
 		google.load("language", "1");
 		function translate_word (word, pronunciation, translation) {
-			$.ajax({
+			/*
+			$.getJSON("http://dict.cn/ws.php?utf8=true&q=" + word + "&callback=?", function (xml) {
+				alert(typeof xml);
+				alert(xml);
+				alert($(xml).find("def").text());
+			});
+			*/
+			$.ajax({ 
 				type: "GET",
-				url: "http://dict.cn/ws.php",
-				data: { utf8 : "true", q : word },
+				url: "http://dict.cn/ws.php?utf8=true&q=" + word + "&callback=?",
+				dataType: "jsonp",
+				jsonp: "callback",
+				//data: { utf8 : "true", q : word },
 				//error can do a lot of work! try to connect like google.
 				//in function ajax can do recursively until connected to server.
 				error: function(XMLHttpRequest, textStatus, errorThrown){
 					alert(textStatus + " 1");
 					alert(errorThrown + " 2");
 				},
-				success: function (xml) {
-					alert(typeof xml);
-					alert($(xml).find("def").val());
-					//取出传过来的最后一个level的id
+				success: function (json) {
+					alert(typeof json);
+					alert(json);
+					//alert($(xml).find("def").val());
 				}//end of success
 			});//end of ajax
 		}
