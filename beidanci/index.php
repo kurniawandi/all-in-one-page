@@ -100,7 +100,7 @@ else
 			$.ajax({ 
 				type: "GET",
 				url: "http://dict.cn/ws.php?utf8=true&q=" + word + "&callback=?",
-				dataType: "jsonp",
+				dataType: "html",
 				jsonp: "callback",
 				//data: { utf8 : "true", q : word },
 				//error can do a lot of work! try to connect like google.
