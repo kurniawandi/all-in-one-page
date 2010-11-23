@@ -87,7 +87,25 @@ else
 		<script type="text/javascript" src="./js/jquery-ui-1.8.6.custom.min.js"></script>
 		<script type="text/javascript">
 		google.load("language", "1");
-		function translate_word (word, obj_place) {
+		function translate_word (word, pronunciation, translation) {
+			$.ajax({
+				type: "GET",
+				url: "http://dict.cn/ws.php",
+				data: { utf8 : "true", q : word },
+				//error can do a lot of work! try to connect like google.
+				//in function ajax can do recursively until connected to server.
+				error: function(XMLHttpRequest, textStatus, errorThrown){
+					alert(textStatus + " 1");
+					alert(errorThrown + " 2");
+				},
+				success: function (xml) {
+					alert(xml);
+					alert($(xml).find("def").val());
+					//取出传过来的最后一个level的id
+				}//end of success
+			});//end of ajax
+		}
+		function translate_word1 (word, obj_place) {
 			google.language.detect(word, function(result) {
 				if (!result.error && result.language) {
 					google.language.translate(word, result.language, "zh", function(result) {
@@ -102,8 +120,9 @@ else
 		function translate_table (level_id) {
 			$("table#level" + level_id).find("tr").each(function () {
 				var word = $(this).find("td.w").text();
-				var this_td_obj = $(this).find("td.trans");
-				translate_word (word, this_td_obj);
+				var pronunciation = $(this).find("td.p").text();
+				var translation = $(this).find("td.trans");
+				translate_word (word, pronunciation, translation);
 				if (level_id != "7")
 				{
 					$(this).find("td.o").empty();
@@ -125,7 +144,7 @@ else
 		</style>
 	</head>
 
-	<body style="font-size:100%;">
+	<body style="font-size:90%;">
 		<h1>单词分级</h1>
 		<p><?php echo "欢迎 " . $_SESSION["bdc_user_show_name"] . "!"; ?></p>
 		<!--

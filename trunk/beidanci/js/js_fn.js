@@ -132,7 +132,7 @@ function show_statistic_result (xml, last_level)
 		res_html[j] += "<input type=\"button\" class=\"all_add_to_lib\" value=\"将所有单词加入生词本\" />";
 		res_html[j] += "</div><!--end of operation_bar-->";
 		res_html[j] += "<table id=\"level" + this_id + "\" border=\"0\">";
-		res_html[j] += "<tr class=\"header\"><th>Word</th><th>Translation</th><th>Frequency</th><th>Operation</th></tr>";
+		res_html[j] += "<tr class=\"header\"><th>Word</th><th>Pron</th><th>Translation</th><th>Frequency</th><th>Operation</th></tr>";
 		var row_array = new Array();
 		var i = 0;
 		//将行的html放入到数组中
@@ -141,6 +141,7 @@ function show_statistic_result (xml, last_level)
 			if (last_level != this_id)
 			{
 			row_array[i] = "<tr><td class=\"w\" width=\"160\">" + $(this).text() + "</td>";
+			row_array[i] += "<td class=\"p\">None</td>";
 			row_array[i] += "<td class=\"trans\">None</td>";
 			row_array[i] += "<td class=\"f\">" + $(this).attr("frequency") + "</td>";
 			row_array[i] += "<td class=\"o\">" + translate_unknown_button_html($(this).text()) + "</td></tr>";
@@ -148,6 +149,7 @@ function show_statistic_result (xml, last_level)
 			else
 			{
 			row_array[i] = "<tr><td class=\"w\" width=\"160\">" + $(this).text() + "</td>";
+			row_array[i] += "<td class=\"p\">Loading...</td>";
 			row_array[i] += "<td class=\"trans\">Loading...</td>";
 			row_array[i] += "<td class=\"f\">" + $(this).attr("frequency") + "</td>";
 			row_array[i] += "<td class=\"o\">" + add_to_lib_button_html($(this).text());
