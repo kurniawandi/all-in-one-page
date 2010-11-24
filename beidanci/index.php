@@ -99,9 +99,9 @@ else
 			*/
 			$.ajax({ 
 				type: "GET",
-				url: "http://dict.cn/ws.php?utf8=true&q=" + word + "&callback=?",
-				dataType: "html",
-				jsonp: "callback",
+				url: "http://dict.cn/ws.php?utf8=true&q=" + word,
+				dataType: "xml",
+				//jsonp: "callback",
 				//data: { utf8 : "true", q : word },
 				//error can do a lot of work! try to connect like google.
 				//in function ajax can do recursively until connected to server.
@@ -109,11 +109,14 @@ else
 					alert(textStatus + " 1");
 					alert(errorThrown + " 2");
 				},
-				success: function (json) {
+				success: function (xml) {
 					alert(typeof json);
 					alert(json);
 					//alert($(xml).find("def").val());
-				}//end of success
+				},//end of success
+				complete: function (XMLHttpRequest, textStatus) {
+					alert(textStatus);
+				}
 			});//end of ajax
 		}
 		function translate_word1 (word, obj_place) {
