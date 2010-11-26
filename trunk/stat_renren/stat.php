@@ -63,13 +63,15 @@ if (isset ($_GET["setzero"]))
 	$result = mysql_query($sql);
 	$sql = "update $tab_name set res_for_one=0 where id=11;";
 	$result = mysql_query($sql);
+	$sql = "update $tab_name set res_for_one=0 where id=12;";
+	$result = mysql_query($sql);
 
 }
 ?>
 <p>统计新鲜事中下列行为的出现频率：
 <li>从上到先查看新鲜事</li>
 <li>如果新鲜事里面出现了一个以下活动，就按"add 1"，如果按错了可以按"cut 1"修改过来</li>
-<li>公共主页产生的新鲜事不统计</li>
+<li>公共主页产生的新鲜事不统计，只统计好友的下列新鲜事</li>
 </p>
 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
 <table>
