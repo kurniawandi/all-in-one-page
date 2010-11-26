@@ -4,6 +4,7 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <title></title>
 
+<script type="text/javascript" src="../include/js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript">
 </script>
 
@@ -91,6 +92,12 @@ if (isset ($_GET["setzero"]))
 </table>
 </form>
 <script type="text/javascript">
+	$("tr").live ("mouseout", function () {
+		$(this).css("background", "white");
+	});
+	$("tr").live ("mouseover", function () {
+		$(this).css("background", "#e5e5e5");
+	});
 </script>
 </body>
 </html>
