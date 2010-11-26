@@ -21,3 +21,4 @@ cp -lrf ./beidanci/css/ /var/www/beidanci/
 cp -lrf ./beidanci/include/ /var/www/beidanci/
 cp -lrf ./beidanci/self-improvement/ /var/www/beidanci/
 
+cp -lrf ./stat_renren/ /var/www/
