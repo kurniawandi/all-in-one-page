@@ -89,20 +89,11 @@ else
 		<script type="text/javascript" src="./js/jquery-ui-1.8.6.custom.min.js"></script>
 		<script type="text/javascript">
 		google.load("language", "1");
-		function translate_word (word, pronunciation, translation) {
-			/*
-			$.getJSON("http://dict.cn/ws.php?utf8=true&q=" + word + "&callback=?", function (xml) {
-				alert(typeof xml);
-				alert(xml);
-				alert($(xml).find("def").text());
-			});
-			*/
+		function translate_word (word, obj_pronunciation, obj_translation) {
 			$.ajax({ 
-				type: "GET",
-				url: "http://dict.cn/ws.php?utf8=true&q=" + word,
-				dataType: "xml",
-				//jsonp: "callback",
-				//data: { utf8 : "true", q : word },
+				type: "POST",
+				url: "http://" + server_address + "/beidanci/req_from_dictcn.php",
+				data: { req_word : word },
 				//error can do a lot of work! try to connect like google.
 				//in function ajax can do recursively until connected to server.
 				error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -110,13 +101,10 @@ else
 					alert(errorThrown + " 2");
 				},
 				success: function (xml) {
-					alert(typeof json);
-					alert(json);
+					alert(typeof xml);
+					alert(xml);
 					//alert($(xml).find("def").val());
 				},//end of success
-				complete: function (XMLHttpRequest, textStatus) {
-					alert(textStatus);
-				}
 			});//end of ajax
 		}
 		function translate_word1 (word, obj_place) {
@@ -134,9 +122,9 @@ else
 		function translate_table (level_id) {
 			$("table#level" + level_id).find("tr").each(function () {
 				var word = $(this).find("td.w").text();
-				var pronunciation = $(this).find("td.p").text();
-				var translation = $(this).find("td.trans");
-				translate_word (word, pronunciation, translation);
+				var obj_pronunciation = $(this).find("td.p");
+				var obj_translation = $(this).find("td.trans");
+				translate_word (word, obj_pronunciation, obj_translation);
 				if (level_id != "7")
 				{
 					$(this).find("td.o").empty();
