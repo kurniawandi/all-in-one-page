@@ -99,7 +99,7 @@ function add_to_lib_button_html (which_word)
 //用户记录不需要统计的单词
 function add_to_known_button_html (which_word)
 {
-	return "<input type=\"button\" id=\"" + which_word + "@known\" class=\"add_to_known\" value=\"忽略统计\" />";
+	return "<input type=\"button\" id=\"" + which_word + "@known\" class=\"add_to_known\" value=\"下次不统计\" />";
 }
 
 function translate_unknown_button_html (which_word)

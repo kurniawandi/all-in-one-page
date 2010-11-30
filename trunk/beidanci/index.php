@@ -101,9 +101,11 @@ else
 					alert(errorThrown + " 2");
 				},
 				success: function (xml) {
-					alert(typeof xml);
-					alert(xml);
-					//alert($(xml).find("def").val());
+					//alert(xml);
+					//alert($(xml).find("def").text());
+					//alert(typeof obj_translation);
+					obj_translation.text($(xml).find("def").text());
+					obj_pronunciation.text("/" + $(xml).find("pron").text() + "/");
 				},//end of success
 			});//end of ajax
 		}
