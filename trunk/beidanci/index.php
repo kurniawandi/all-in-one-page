@@ -150,15 +150,25 @@ else
 
 	<body style="font-size:90%;">
 		<h1>单词分级</h1>
-		<p><?php echo "欢迎 " . $_SESSION["bdc_user_show_name"] . "!"; ?></p>
+		<p><?php echo "欢迎 " . $_SESSION["bdc_user_show_name"] . "!"; ?> 
+		<?php
+		if ( !isset ($_SESSION["user_show_name"]) )
+		{
+			echo "| <a href=\"http://";
+			echo $server_addr;
+			echo "\">登录</a> <a href=\"http://" . $server_addr ."/registration.php\">注册</a></p>";
+		}
+		?>
+		
 		<!--
 		<a href="http://173.234.55.160/bbs/index.php" target="_blank">关于这个应用我要说两句</a>
 		-->
 		<div id="hint_tips"></div>
 		<div id="select_bar">
-			<a id="txt" class="sel_btn">文本粘贴</a>
+			<a id="txt" class="sel_btn">文本粘贴</a> | 
 			<a id="url" class="sel_btn"></a>
 			<a id="wb"  class="sel_btn">单词本</a>
+			<hr />
 		</div>
 
 		<div id="text_paste" class="page">
