@@ -93,7 +93,7 @@ function make_table_from_xml_to_html (xml, suffix, operation)
 //用户将单词加入到生词本的按钮
 function add_to_lib_button_html (which_word)
 {
-	return "<input type=\"button\" id=\"" + which_word + "@wordbook\" class=\"add_to_lib\" value=\"加入生词本\" />";
+	return "<input type=\"button\" title=\"加入生词本可以获得更详细解释和例句\" id=\"" + which_word + "@wordbook\" class=\"add_to_lib\" value=\"加入生词本\" />";
 }
 
 //用户记录不需要统计的单词
