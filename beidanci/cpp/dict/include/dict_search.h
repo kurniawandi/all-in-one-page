@@ -6,7 +6,10 @@
 #include <string.h>
 #include <errno.h>
 #include <iostream>
+#include <string>
 #include <sys/time.h>
+
+using namespace std;
 
 /*
  * 行缓冲区大小
@@ -42,7 +45,7 @@ typedef struct
  */
 typedef struct
 {
-	char word[100];
+	char word[32];
 	int offset;
 	int length;
 } WORD_IDX;
@@ -52,18 +55,24 @@ class dict_lookup
 	public:
 		dict_lookup ();
 		~dict_lookup ();
-		void load_dict_to_memery ();
+		void load_idx_to_memery ();
+		string lookup_dict (string);
 	private:
 		//解析词典，返回一个DICT_INFO结构体指针
-		DICT_INFO *get_dict_info (char *file);
+		DICT_INFO *get_dict_info (string info_file);
 		//解析每行
-		static void parse_line (char *line, DICT_INFO * dict_info);
+		void parse_line (char *line, DICT_INFO * dict_info);
 		//Get a OFF_LEN struct of a word.
-		static void *get_words (char *filename, DICT_INFO * dict_info, WORD_IDX * word_idx);
+		void *get_words (string filename, DICT_INFO* dict_info, WORD_IDX * word_idx);
 		//Binary search for word's idx information.
-		WORD_IDX *get_idx (char *word, WORD_IDX * word_idx, DICT_INFO * dict_info0);
-		inline static int to_int (unsigned char *from_int);
-
+		WORD_IDX *get_idx (string word, WORD_IDX * word_idx, DICT_INFO * dict_info);
+		inline static int to_int (unsigned char *from_int)
+		{
+			return *(from_int + 3) + (*(from_int + 2) << 8) + (*(from_int + 1) << 16) + (*from_int << 24);
+		}
+		string dict_file_name;
+		DICT_INFO *dict_info;
+		WORD_IDX *idx;
 };
 
 #endif
