@@ -1,4 +1,5 @@
 #include <iostream>
+#include <exception>
 #include "dict_search.h"
 
 using namespace std;
@@ -35,7 +36,10 @@ string dict_lookup::lookup_dict (string unknown_word)
 {
 	WORD_IDX *word = get_idx (unknown_word, idx, dict_info);
 
-	//printf ("%s,%d,%d\n", word->word, word->offset, word->length);
+	if ( NULL == word)
+	{
+		return "NOTFOUND";
+	}
 
 	string dictname = dict_file_name + "dict";
 	FILE *dict = fopen (dictname.c_str(), "r");
@@ -180,6 +184,10 @@ WORD_IDX* dict_lookup::get_idx (string word, WORD_IDX * word_idx, DICT_INFO * di
 			head = cur;
 		}
 		cur = (tail + head) / 2;
+		if (head == cur)
+		{
+			return NULL;
+		}
 	}
 }
 

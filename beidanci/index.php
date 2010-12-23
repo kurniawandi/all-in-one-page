@@ -92,7 +92,8 @@ else
 		function translate_word (word, obj_pronunciation, obj_translation) {
 			$.ajax({ 
 				type: "POST",
-				url: "http://" + server_address + "/beidanci/req_from_dictcn.php",
+				//url: "http://" + server_address + "/beidanci/req_from_dictcn.php",
+				url: "http://" + server_address + "/beidanci/req_from_localhost.php",
 				data: { req_word : word },
 				//error can do a lot of work! try to connect like google.
 				//in function ajax can do recursively until connected to server.
@@ -101,7 +102,7 @@ else
 					alert(errorThrown + " 2");
 				},
 				success: function (xml) {
-					//alert(xml);
+					alert(xml);
 					//alert($(xml).find("def").text());
 					//alert(typeof obj_translation);
 					obj_translation.text($(xml).find("def").text());
