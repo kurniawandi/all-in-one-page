@@ -17,6 +17,8 @@ const int MAXHOSTNAME = 200;
 const int MAXCONNECTIONS = 5;
 const int MAXRECV = 500;
 
+const int DEBUG = 1;
+
 class Socket
 {
  public:
@@ -40,10 +42,11 @@ class Socket
   void set_non_blocking ( const bool );
 
   bool is_valid() const { return m_sock != -1; }
+  
+  int m_sock;
 
  private:
 
-  int m_sock;
   sockaddr_in m_addr;
 
 
