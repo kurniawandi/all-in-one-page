@@ -14,28 +14,42 @@ if ( isset($_POST["req_word"]) )
 	if ( $socket === false )
 	{
 		echo "ERROR" . socket_strerror(socket_last_error());
+		exit();
 	}
-
-	$result = socket_connect($socket, $address, $service_port);
-	if ($result === false) 
+	else
 	{
-		echo "ERROR" . socket_strerror(socket_last_error());
-	} 
-
-	$in = $_POST["req_word"];
-	$buf = 'This is my buffer.';
-	socket_write($socket, $in, strlen($in));
-
-	if (false !== ($bytes = socket_recv($socket, $buf, 2048, MSG_WAITALL))) 
-	{
-		socket_close($socket);
-		//header("Content-Type: text/xml");
-		echo $buf;
-	} 
-	else 
-	{
-		socket_close($socket);
-		echo "ERROR" . socket_strerror(socket_last_error());
+		$result = socket_connect($socket, $address, $service_port);
+		if ($result === false) 
+		{
+			echo "ERROR" . socket_strerror(socket_last_error());
+		exit();
+		}
+		else
+		{
+			$in = $_POST["req_word"];
+			$buf = 'This is my buffer.';
+			$sent = socket_send($socket, $in, strlen($in), MSG_EOF);
+			if ($sent == false) 
+			{
+				echo $sent;
+				echo "ERROR2" . socket_strerror(socket_last_error());
+		exit();
+			}
+			else
+			{
+				if (false !== ($bytes = socket_recv($socket, $buf, 2048, MSG_WAITALL))) 
+				{
+					socket_close($socket);
+					//header("Content-Type: text/xml");
+					echo $buf;
+				} 
+				else 
+				{
+					socket_close($socket);
+					echo "ERROR3" . socket_strerror(socket_last_error());
+				}
+			}
+		}
 	}
 }
 else

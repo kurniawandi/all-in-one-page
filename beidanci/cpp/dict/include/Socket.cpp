@@ -30,6 +30,10 @@ bool Socket::create()
   m_sock = socket ( AF_INET,
 		    SOCK_STREAM,
 		    0 );
+if (DEBUG)
+{
+cout << "m_sock : " << m_sock << endl;
+}
 
   if ( ! is_valid() )
     return false;
@@ -99,6 +103,11 @@ bool Socket::accept ( Socket& new_socket ) const
   int addr_length = sizeof ( m_addr );
   new_socket.m_sock = ::accept ( m_sock, ( sockaddr * ) &m_addr, ( socklen_t * ) &addr_length );
 
+if (DEBUG)
+{
+cout << "new m_sock : " << new_socket.m_sock << endl;
+}
+
   if ( new_socket.m_sock <= 0 )
     return false;
   else
@@ -108,6 +117,11 @@ bool Socket::accept ( Socket& new_socket ) const
 
 bool Socket::send ( const std::string s ) const
 {
+if (DEBUG)
+{
+cout << "send m_sock : " << m_sock << endl;
+}
+
   int status = ::send ( m_sock, s.c_str(), s.size(), MSG_NOSIGNAL );
   if ( status == -1 )
     {
@@ -128,20 +142,42 @@ int Socket::recv ( std::string& s ) const
 
   memset ( buf, 0, MAXRECV + 1 );
 
+if (DEBUG)
+{
+cout << "recv m_sock : " << m_sock << endl;
+}
+
   int status = ::recv ( m_sock, buf, MAXRECV, 0 );
+
+if (DEBUG)
+{
+cout << "recv status = " << status << endl;
+}
 
   if ( status == -1 )
     {
+if (DEBUG)
+{
+cout << "m_sock " << m_sock << " recv and s = " << s << endl;
+}
       std::cout << "status == -1   errno == " << errno << "  in Socket::recv\n";
       return 0;
     }
   else if ( status == 0 )
     {
+if (DEBUG)
+{
+cout << "m_sock " << m_sock << " recv and s = " << s << endl;
+}
       return 0;
     }
   else
     {
       s = buf;
+if (DEBUG)
+{
+cout << "m_sock " << m_sock << " recv and s = " << s << endl;
+}
       return status;
     }
 }

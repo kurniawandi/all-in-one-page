@@ -25,6 +25,10 @@ ServerSocket::ServerSocket ( int port )
 
 ServerSocket::~ServerSocket()
 {
+if (DEBUG)
+{
+cout << "destroy m_sock : " << m_sock << endl;
+}
 }
 
 
@@ -42,6 +46,10 @@ const ServerSocket& ServerSocket::operator << ( const std::string& s ) const
 
 const ServerSocket& ServerSocket::operator >> ( std::string& s ) const
 {
+if (DEBUG)
+{
+cout << "begain recv." << endl;
+}
   if ( ! Socket::recv ( s ) )
     {
       throw SocketException ( "Could not read from socket." );

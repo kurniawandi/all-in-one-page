@@ -26,8 +26,8 @@ int main (int argc, char* argv[])
 {
 	dict_lookup lazy_worm;
 	lazy_worm.load_idx_to_memery();
-	cout << lazy_worm.lookup_dict("Divorce") << endl;
-	cout << xml_wrapper("divorce", lazy_worm.lookup_dict("Divorce"));
+	//cout << lazy_worm.lookup_dict("Divorce") << endl;
+	//cout << xml_wrapper("divorce", lazy_worm.lookup_dict("Divorce"));
 	cout << endl;
 	try
 	{
@@ -38,7 +38,10 @@ int main (int argc, char* argv[])
 		{
 			ServerSocket new_sock;
 			server.accept ( new_sock );
-			cout << "came1" << endl;
+if (DEBUG)
+{
+cout << "came1" << endl;
+}
 
 			try
 			{
@@ -46,11 +49,12 @@ int main (int argc, char* argv[])
 				{
 					std::string data;
 					new_sock >> data;
-			cout << "came2" << endl;
-					cout << data << endl;
 					new_sock << xml_wrapper(data, lazy_worm.lookup_dict(data));
 					cout <<  xml_wrapper(data, lazy_worm.lookup_dict(data)) << endl;
-			cout << "came3" << endl;
+if (DEBUG)
+{
+cout << "came3" << endl;
+}
 				}
 			}
 			catch ( SocketException& e ) 
